@@ -1,6 +1,6 @@
 # Blog Next.js
 
-Este é um projeto de blog construído com Next.js, usando diversas tecnologias como Tailwind CSS, .
+Este é um projeto de blog construído com Next.js, usando diversas tecnologias como Tailwind CSS, Typescript e Content Layer.
 
 ## Estrutura do Projeto
 
