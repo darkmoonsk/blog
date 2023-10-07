@@ -33,7 +33,7 @@ function Header() {
         >
           <LinkedinIcon
             className={`
-            inline-block w-6 h-6 mr-2
+            inline-block max-w-6 max-h-6 mr-2
             ${iconAnimation}
             `}
           />
@@ -46,7 +46,7 @@ function Header() {
         >
           <GithubIcon
             className={`
-            inline-block w-6 h-6 mr-2
+            inline-block max-w-6 max-h-6 mr-2
             ${iconAnimation}
             `}
           />
