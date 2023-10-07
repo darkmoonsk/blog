@@ -1,0 +1,35 @@
+{
+  "title": "Blog one title",
+  "publishedAt": "2023-07-10T03:00:00.000Z",
+  "updatedAt": "2023-07-10T03:00:00.000Z",
+  "description": "Blog one description",
+  "image": {
+    "filePath": "../public/blogs/emile-perron-xrVDYZRGdw4-unsplash.jpg",
+    "relativeFilePath": "../../public/blogs/emile-perron-xrVDYZRGdw4-unsplash.jpg",
+    "format": "jpeg",
+    "height": 1080,
+    "width": 1920,
+    "aspectRatio": 1.7777777777777777,
+    "blurhashDataUrl": "data:image/jpeg;base64,/9j/2wBDAAoHBwgHBgoICAgLCgoLDhgQDg0NDh0VFhEYIx8lJCIfIiEmKzcvJik0KSEiMEExNDk7Pj4+JS5ESUM8SDc9Pjv/2wBDAQoLCw4NDhwQEBw7KCIoOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozv/wAARCAAIAAgDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAP/xAAcEAABBQADAAAAAAAAAAAAAAACAAEDBAYRIUH/xAAVAQEBAAAAAAAAAAAAAAAAAAAAAf/EABYRAQEBAAAAAAAAAAAAAAAAAAARAf/aAAwDAQACEQMRAD8Agewigzxx17BVrtcXGMm7YibzlERWYV//2Q=="
+  },
+  "isPublished": true,
+  "author": "Bruno Souza",
+  "tags": [
+    "produtividade",
+    "css\r"
+  ],
+  "body": {
+    "raw": "\r\n\r\n# Este é um elemento h1\r\n## Este é um elemento h2",
+    "html": "<h1>Este é um elemento h1</h1>\n<h2>Este é um elemento h2</h2>"
+  },
+  "_id": "blog-one/index.mdx",
+  "_raw": {
+    "sourceFilePath": "blog-one/index.mdx",
+    "sourceFileName": "index.mdx",
+    "sourceFileDir": "blog-one",
+    "contentType": "mdx",
+    "flattenedPath": "blog-one"
+  },
+  "type": "Blog",
+  "url_path": "/blogs/blog-one"
+}

@@ -9,19 +9,36 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@dotlottie/react-player": "^1.6.1",
+    "@supabase/auth-helpers-nextjs": "^0.8.1",
+    "@tailwindcss/forms": "^0.5.6",
+    "@tailwindcss/typography": "^0.5.10",
+    "contentlayer": "^0.3.4",
+    "date-fns": "^2.30.0",
+    "github-slugger": "^2.0.0",
+    "next": "13.5.4",
+    "next-contentlayer": "^0.3.4",
     "react": "^18",
     "react-dom": "^18",
-    "next": "13.5.4"
+    "react-hook-form": "^7.47.0",
+    "reading-time": "^1.5.0",
+    "rehype-autolink-headings": "^7.0.0",
+    "rehype-pretty-code": "^0.10.1",
+    "rehype-slug": "^6.0.0",
+    "remark-gfm": "^4.0.0",
+    "shiki": "^0.14.4"
   },
   "devDependencies": {
-    "typescript": "^5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10",
-    "postcss": "^8",
-    "tailwindcss": "^3",
+    "encoding": "^0.1.13",
     "eslint": "^8",
-    "eslint-config-next": "13.5.4"
+    "eslint-config-next": "13.5.4",
+    "postcss": "^8",
+    "sharp": "^0.32.6",
+    "tailwindcss": "^3",
+    "typescript": "^5"
   }
 }
