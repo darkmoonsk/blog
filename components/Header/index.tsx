@@ -15,16 +15,17 @@ function Header() {
           flex items-center gap-2 w-max py-3 px-8 bg-light/80 backdrop-blur-sm
           border border-solid border-dark rounded-full 
           font-medium capitalize 
-          fixed top-6 right-1/2 translate-x-1/2
+          fixed top-6 right-1/2 translate-x-1/2 z-50
       "
       >
-        <Link href="/">Inicio</Link>
-        <Link href="/about">Sobre</Link>
-        <Link href="/contact">Contato</Link>
+        <Link href="/" className="mr-2">Inicio</Link>
+        <Link href="/about"className="mx-2">Sobre</Link>
+        <Link href="/contact" className="mx-2">Contato</Link>
         <button>
           <SunIcon />
         </button>
       </nav>
+      
       <div className="flex items-center gap-5">
         <a
           href="https://www.linkedin.com/in/brunosouzadkm"
@@ -50,7 +51,7 @@ function Header() {
             ${iconAnimation}
             `}
           />
-          Linkedin
+          Github
         </a>
         <a
           href="https://www.linkedin.com/in/brunosouzadkm"
@@ -63,7 +64,7 @@ function Header() {
             ${iconAnimation}
             `}
           />
-          Linkedin
+          Portfolio
         </a>
       </div>
     </header>
