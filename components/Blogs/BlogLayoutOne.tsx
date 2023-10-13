@@ -4,7 +4,7 @@ import Link from "next/link"
 
 function BlogLayoutOne({blog}: any) {
   return (
-    <div className="inline-block overflow-hidden rounded-xl">
+    <div className="cursor-pointer group inline-block overflow-hidden rounded-xl">
        <div 
         className="
           absolute top-0 left-0 bottom-0 right-0 h-full
@@ -15,7 +15,7 @@ function BlogLayoutOne({blog}: any) {
           alt={blog.title}
           width={blog.image.width}
           height={blog.image.height}
-          className="w-full h-full object-center object-cover rounded-xl"
+          className="w-full h-full object-center object-cover rounded-xl group-hover:scale-105 transition-all duration-300"
         />
         
         <div className="w-full absolute bottom-0 p-10 z-20">
@@ -28,7 +28,7 @@ function BlogLayoutOne({blog}: any) {
             font-bold capitalize text-light text-2xl mt-5
           ">
             <span className="bg-gradient-to-r from-accent to-accent bg-[length:0px_6px]
-            hover:bg-[length:100%_6px] bg-left-bottom bg-no-repeat 
+            group-hover:bg-[length:100%_6px] bg-left-bottom bg-no-repeat 
             transition-[background-size] duration-500
             ">
               {blog.title}
