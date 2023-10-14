@@ -2,6 +2,7 @@ import { allBlogs } from "@/.contentlayer/generated"
 import BlogDetails from "@/components/Blogs/BlogDetails";
 import RenderMdx from "@/components/Blogs/RenderMdx";
 import Tag from "@/components/Elements/Tag";
+import siteMetaData from "@/utils/siteMetaData";
 import { slug } from "github-slugger";
 import Image from "next/image";
 
@@ -9,12 +10,54 @@ export async function generateStaticParams() {
   return allBlogs.map(blog => ({ slug: blog._raw.flattenedPath }));
 }
 
+export async function generateMetadata({ params }: any) {
+  const blog = allBlogs.find(blog => blog._raw.flattenedPath === params.slug);
+
+  if(!blog) return
+
+  const publishedAt = new Date(blog.publishedAt).toISOString();
+  const modifiedAt = new Date(blog.updatedAt || blog.publishedAt).toISOString();
+
+  let imageList = [siteMetaData.socialBanner];
+  if(blog.image) {
+    imageList = typeof blog.image.filePath === "string" ?
+    [siteMetaData.siteUrl + blog.image.filePath.replace("../public", "")] : blog.image
+  }
+  const ogImages = imageList.map(img => {
+    return {url: img.includes("http") ? img : siteMetaData.siteUrl + img}
+  })
+
+  const authors = blog?.author ? [blog.author] : siteMetaData.author;
+
+  return {
+    title: blog.title,
+    description: blog.description,
+    openGraph: {
+      title: blog.title,
+      description: siteMetaData.siteUrl + blog.description,
+      url: siteMetaData.siteUrl + "/blogs" + params.slug,
+      siteName: siteMetaData.title,
+      locale: 'pt_BR',
+      type: 'article',
+      publishedTime: publishedAt,
+      modifiedTime: modifiedAt,
+      images: ogImages,
+      authors: authors.length > 0 ? authors : [siteMetaData.author]
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: siteMetaData.title,
+      images: ogImages,
+    },
+  }
+}
+
 export default function BlogPage({ params }: any) {
 
   const blog = allBlogs.find(blog => blog._raw.flattenedPath === params.slug);
 
   if (!blog) {
-    return <div>Blog não encontrado</div>
+    return <div className="w-full text-red-600 text-center mt-4">Blog não encontrado</div>
   }
 
   return (
@@ -41,7 +84,7 @@ export default function BlogPage({ params }: any) {
             className="curso-pointer aspect-square w-full h-full object-cover object-center"
           />
         </div>
-        <BlogDetails blog={blog} slug={blog.slug} />
+        <BlogDetails blog={blog} slug={params.slug} />
         <div className="grid grid-cols-12 gap-16 mt-8 px-10">
           <div className="col-span-4">
             <details className="border-[1px] border-solid border-dark text-dark rounded-lg p-4 stick top-6

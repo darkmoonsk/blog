@@ -4,6 +4,7 @@ import { GithubIcon, LinkedinIcon, MoonIcon, SunIcon } from "../Icons";
 import portfolioImage from "@/public/portfolio.png";
 import Image from "next/image";
 import Link from "next/link";
+import siteMetaData from "@/utils/siteMetaData";
 
 function Footer() {
   const year = new Date().getFullYear();
@@ -47,7 +48,7 @@ function Footer() {
 
       <div className="flex items-center gap-5 p-5 my-8 bg-blue-950/80 ">
         <a
-          href="https://www.linkedin.com/in/brunosouzadkm"
+          href={siteMetaData.linkedin}
           target="_blank"
           className="flex items-center drop-shadow-2xl"
         >
@@ -60,20 +61,20 @@ function Footer() {
           Linkedin
         </a>
         <a
-          href="https://www.linkedin.com/in/brunosouzadkm"
+          href={siteMetaData.github}
           target="_blank"
           className="flex items-center drop-shadow-2xl"
         >
           <GithubIcon
             className={`
-            inline-block max-w-6 max-h-6 mr-2
+            inline-block max-w-6 max-h-6 mr-2 fill-light
             ${iconAnimation}
             `}
           />
           Github
         </a>
         <a
-          href="https://www.linkedin.com/in/brunosouzadkm"
+          href={siteMetaData.portfolio}
           target="_blank"
           className="flex items-center drop-shadow-2xl"
         >
