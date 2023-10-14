@@ -2,18 +2,28 @@ import { allBlogs } from "@/.contentlayer/generated"
 import BlogDetails from "@/components/Blogs/BlogDetails";
 import RenderMdx from "@/components/Blogs/RenderMdx";
 import Tag from "@/components/Elements/Tag";
+import { slug } from "github-slugger";
 import Image from "next/image";
 
+export async function generateStaticParams() {
+  return allBlogs.map(blog => ({ slug: blog._raw.flattenedPath }));
+}
+
 export default function BlogPage({ params }: any) {
+
   const blog = allBlogs.find(blog => blog._raw.flattenedPath === params.slug);
-  console.log(blog)
+
+  if (!blog) {
+    return <div>Blog não encontrado</div>
+  }
+
   return (
     <article>
       <div className="mb-8 text-center relative w-full h-[70vh] bg-dark">
         <div className="w-full z-10 flex flex-col items-center justify-center absolute top-1/2 left-1/2
          -translate-x-1/2 -translate-y-1/2
         ">
-          <Tag name={blog.tags[0]} link={`/categories/${blog.tags[0]}`} 
+          <Tag name={blog.tags![0]} link={`/categories/${slug(blog.tags![0])}`} 
             className="px-6 text-sm py-2"
           />
           <h1 className="inline-block mt-6 font-semibold capitalize text-light text-5xl leading-normal
@@ -24,10 +34,10 @@ export default function BlogPage({ params }: any) {
         </div>
         <div className="absolute top-0 left-0 right-0 bottom-0 h-full bg-dark/60" />
           <Image
-            src={blog.image.filePath.replace("../public", "")}
+            src={blog.image?.filePath.replace("../public", "") || ""}
             alt={blog.title}
-            width={blog.image.width}
-            height={blog.image.height}
+            width={blog.image?.width}
+            height={blog.image?.height}
             className="curso-pointer aspect-square w-full h-full object-cover object-center"
           />
         </div>
