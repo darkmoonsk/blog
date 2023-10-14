@@ -1,6 +1,12 @@
 import AboutCoverSection from "@/components/About/AboutCoverSection"
 import Skills from "@/components/About/Skills"
+import { Metadata } from "next";
 import Link from "next/link"
+
+export const metadata: Metadata = {
+  title: "Sobre mim",
+  description: `Veja alguns detalhes sobre mim`,
+};
 
 function About() {
   return (
