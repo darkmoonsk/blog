@@ -1,8 +1,10 @@
 import Image from "next/image"
 import Tag from "../Elements/Tag"
 import Link from "next/link"
+import { slug } from "github-slugger"
 
 function BlogLayoutOne({blog}: any) {
+
   return (
     <div className="cursor-pointer group inline-block overflow-hidden rounded-xl">
        <div 
@@ -19,7 +21,7 @@ function BlogLayoutOne({blog}: any) {
         />
         
         <div className="w-full absolute bottom-0 p-10 z-20">
-          <Tag Link={`/categories/${blog.tags[0]}`} name={blog.tags[0]} 
+          <Tag link={`/categories/${slug(blog.tags[0])}`} name={blog.tags[0]} 
             className="px-6 text-sm py-2 !border"
           />
           <Link href={blog.url_path} className="mt-6">

@@ -2,11 +2,13 @@ import { sortBlogs } from "@/utils";
 import Image from "next/image";
 import Link from "next/link";
 import Tag from "../Elements/Tag";
+import GithubSlugger, { slug }  from "github-slugger";
+
 
 function HomeCoverSection({ blogs }: any) {
   const sortedBlogs = sortBlogs(blogs);
   const blog = sortedBlogs[1];
-  console.log(blog);
+
   return (
     <div className="w-full inline-block">
       <article className="flex flex-col items-start justify-end mx-10 relative h-[85vh]">
@@ -22,7 +24,7 @@ function HomeCoverSection({ blogs }: any) {
           className="w-full h-full object-center object-cover rounded-3xl z-0"
         />
         <div className="w-3/4 p-16 flex flex-col items-start justify-center z-10 text-light">
-          <Tag Link={`/categories/${blog.tags[0]}`} name={blog.tags[0]} />
+          <Tag link={`/categories/${slug(blog.tags[0])}`} name={blog.tags[0]} />
           <Link href={blog.url_path} className="mt-6">
           <h1 
           className="
