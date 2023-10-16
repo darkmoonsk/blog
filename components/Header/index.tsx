@@ -1,12 +1,10 @@
 "use client"
-import Link from "next/link";
 import Logo from "./Logo";
 import { GithubIcon, LinkedinIcon, MoonIcon, SunIcon } from "../Icons";
 import portfolioImage from "@/public/portfolio.png";
 import Image from "next/image";
 import siteMetaData from "@/utils/siteMetaData";
-import { useThemeSwitch } from "../Hooks/useThemeSwitch";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Menu from "./Menu";
 
 function Header() {
@@ -20,7 +18,7 @@ function Header() {
   return (
     <header className="w-full p-4 px-5 sm:px-10 flex items-center justify-between">
       <Logo />
-      <button className="inline-block cursor-pointer lg:hidden z-50 bg-light"
+      <button className="fixed right-6 top-4 cursor-pointer lg:hidden z-50 bg-light"
       onClick={toggleClick}
       >
         <div className="w-6 transition-all ease duration-300">

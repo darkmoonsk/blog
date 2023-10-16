@@ -8,7 +8,7 @@ export default function ContactForm() {
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data: {}) => console.log(data);
   console.log(errors);
 
   return (
@@ -53,7 +53,7 @@ export default function ContactForm() {
         "
       />
       <input type="submit" value="Enviar" className="mt-8 font-medium inline-block capitalize text-xl py-3 px-8 border-2 border-solid
-      border-dark rounded cursor-pointer
+      border-dark dark:border-light rounded cursor-pointer
       " />
     </form>
   );
