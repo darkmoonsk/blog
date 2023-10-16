@@ -12,7 +12,7 @@ const config: Config = {
       colors: {
         dark: "#1B1B1B",
         light: "#FFF",
-        accent: "#7B00D3",
+        accent: "#07bbd6",
         accentDark: "#FFDB4D",
         gray: "#747474"
       },
@@ -29,6 +29,13 @@ const config: Config = {
           "100%": {transform: "translateX(-100%)"}
         },
       },
+      screens: {
+        sxl: "1180px",
+        xs: "480px",
+      },
+      backgroundImage: {
+        galaxy: "url('/galaxy-bg.png')",
+      }
     },
   },
   plugins: [
