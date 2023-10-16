@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://brunosouzadev.com
+
+# Sitemaps
+Sitemap: https://brunosouzadev.com/sitemap.xml
