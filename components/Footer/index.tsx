@@ -95,7 +95,7 @@ function Footer() {
       </div>
       <div className="w-full rounded-b-2xl bg-blue-950/80 p-5 mx-8 flex flex-col gap-3 items-center text-center lg:flex-row lg:justify-between">
         <span className="font-semibold text-transparent bg-gradient-to-tr from-slate-100 to-sky-300 bg-clip-text">&copy; {year} Bruno Souza. Todos os direitos reservados</span>
-        <Link href="/sitemap.xml" className="underline">
+        <Link href="/sitemap-0.xml" className="underline">
           sitemap.xml
         </Link>
         <span>Feito com &hearts; por <a href="#">Bruno Souza</a></span>
