@@ -5,7 +5,7 @@ const siteMetaData = {
   description: "Meu blog pessoal onde eu falo de programação e ciência.",
   language: "pt-BR",
   theme: "system", // system, dark or light
-  siteUrl: "https://create-blog-with-nextjs.vercel.app", // your website URL
+  siteUrl: "https://brunosouzadev.com", // your website URL
   siteLogo: "/logo.png",
   socialBanner: "/social-banner.png", // add social banner in the public folder
   email: "brunoezully@gmail.com",
@@ -17,4 +17,4 @@ const siteMetaData = {
   locale: "pt-BR",
 };
 
-export default siteMetaData;
+module.exports = siteMetaData;
