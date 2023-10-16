@@ -6,4 +6,4 @@ Allow: /
 Host: https://brunosouzadev.com
 
 # Sitemaps
-Sitemap: https://brunosouzadev.com/sitemap.xml
+Sitemap: https://brunosouzadev.com/sitemap-0.xml
