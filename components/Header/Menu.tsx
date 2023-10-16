@@ -4,12 +4,12 @@ import { useThemeSwitch } from "../Hooks/useThemeSwitch"
 import { cx } from "@/utils";
 
 interface MenuProps {
-  isMobile?: boolean
+  isActive?: boolean
 }
 
-function Menu({ isMobile } : MenuProps ) {
+function Menu({ isActive } : MenuProps ) {
   const [mode, setMode] = useThemeSwitch();
-  const menuHidden = isMobile ? "flex" : "hidden"
+  const menuHidden = isActive ? "flex" : "hidden"
 
   const toggleTheme = () => {
     const result = mode === "light" ? "dark" : "light"

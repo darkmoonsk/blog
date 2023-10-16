@@ -18,6 +18,10 @@ export function useThemeSwitch() {
 
   const getUserPreference = () => {
 
+    if(typeof window === "undefined") {
+      return "dark";
+    }
+
     const userPrefer = window.localStorage.getItem(storageKey);
     if(userPrefer) {
       return userPrefer;
@@ -25,7 +29,7 @@ export function useThemeSwitch() {
 
     return window.matchMedia(preferDarkTheme).matches ? "dark" : "light";
   }
-  const [mode, setMode] = useState("dark");
+  const [mode, setMode] = useState(getUserPreference());
 
   useEffect(() => {
     const mediaQuery = window.matchMedia(preferDarkTheme);

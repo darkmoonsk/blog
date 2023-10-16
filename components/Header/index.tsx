@@ -46,11 +46,7 @@ function Header() {
         </div>
       </button>
 
-      {
-        click && <Menu isMobile />
-      }
-
-      <Menu />
+      <Menu isActive={click} />
 
       <div className="items-center gap-5 hidden lg:flex">
         <a
