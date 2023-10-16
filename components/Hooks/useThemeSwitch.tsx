@@ -25,7 +25,6 @@ export function useThemeSwitch() {
 
     return window.matchMedia(preferDarkTheme).matches ? "dark" : "light";
   }
-
   const [mode, setMode] = useState("dark");
 
   useEffect(() => {
