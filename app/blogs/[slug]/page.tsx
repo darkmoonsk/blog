@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: any) {
     description: blog.description,
     openGraph: {
       title: blog.title,
-      description: siteMetaData.siteUrl + blog.description,
+      description: siteMetaData.siteUrl + " " + blog.description,
       url: siteMetaData.siteUrl + "/blogs/" + params.slug,
       siteName: siteMetaData.title,
       locale: 'pt_BR',
