@@ -1,0 +1,92 @@
+---
+title: "Máquina de Estados na Lógica de Programação"
+description: "Entenda a lógica por trás dos estados na programação e como eles podem otimizar o fluxo de execução dos seus programas."
+image: "../../public/blogs/state-machine.jpg"
+publishedAt: "2023-07-16"
+updatedAt: "2023-07-16"
+author: "Bruno Souza"
+isPublished: true
+tags: 
+- programacao
+---
+
+Uma Máquina de Estados é um modelo matemático abstrato usado para projetar algoritmos. De uma forma mais simples, uma Máquina de Estados irá ler uma entrada e mudar o fluxo do programa para um estado diferente.
+
+Este é um conceito muito importante na Ciência da Computação, pois nos permite gerenciar de forma mais pratica os estados da nossa aplicação.
+
+## O que é um estado?
+
+Um estado é uma condição ou status especifico que o sistema pode estar em um determinado momento. Cada estado representa uma fase distinta no ciclo de vida da aplicação. Um exemplo bem simples é o uso de Máquina de Estados em Jogos.
+
+As máquinas de estados finitos são amplamente utilizadas em jogos para controlar o comportamento de personagens controlados pelo computador, também conhecidos como personagens não jogáveis (NPCs). Por exemplo, um NPC pode ter um estado "descansando" ou "patrulhando" enquanto espera por uma ação do jogador, um estado "perseguindo" quando o jogador está próximo e um estado "atacando" quando o jogador entra em seu alcance de ataque.
+
+As transições entre esses estados podem ser controladas por uma série de regras, como a distância entre o NPC e o jogador, se o jogador está armado ou não, etc. Isso permite que os NPCs tenham comportamentos mais complexos e reais, o que pode tornar o jogo mais interessante e desafiador para o jogador.
+
+Além disso, as máquinas de estados finitos também podem ser usadas para controlar o comportamento de outros elementos do jogo, como objetos, cenários e interfaces.
+
+Em interfaces, pode ser usada para controlar os diversos estados que uma interface pode estar, controlando o que será exibido com a interação do usuário e as mudanças de estados ocasionadas por essa interação.
+
+Isso é particularmente útil em interfaces complexas, onde há muitos elementos e cada um pode ter vários estados possíveis. A máquina de estado ajuda a manter a lógica da interface do usuário organizada e fácil de entender, além de ajudar a evitar bugs.
+
+As máquinas de estado também são úteis para controlar a lógica de navegação entre diferentes telas ou páginas em um aplicativo. Cada tela ou página pode ser considerada um "estado", e a máquina de estado pode controlar as transições entre esses estados.
+
+## Máquina de Estados na Lógica de Programação
+
+Uma Máquina de Estados é uma ferramenta poderosa para controlar o fluxo de execução de programas.
+
+![Exemplo do funcionamento de uma maquina de estados](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0aa2149a-269b-4077-baef-f5c8bd5e503a/Untitled.png)
+
+Aqui está um exemplo simples de como isso pode ser implementado em pseudocódigo:
+
+```jsx
+enum Estado { Dormindo, Comendo, Trabalhando }
+
+Estado estadoAtual = Estado.Dormindo
+
+while(true) {
+  switch(estadoAtual) {
+    case Estado.Dormindo:
+      acordar()
+      estadoAtual = Estado.Comendo
+      break
+    case Estado.Comendo:
+      terminarRefeicao()
+      estadoAtual = Estado.Trabalhando
+      break
+    case Estado.Trabalhando:
+      terminarTrabalho()
+      estadoAtual = Estado.Dormindo
+      break
+  }
+}
+```
+
+Nesse exemplo, temos uma pessoa que passa por três diferentes estados durante o dia: Dormindo, Comendo e Trabalhando. Inicialmente, a pessoa está dormindo. Uma vez que ela acorda, o estado muda para o estado de “Comendo”. Quando termina a Refeição, muda para o estado de “Trabalhando”. E, finalmente, após terminar o trabalho, volta para o estado de “Dormindo”. O ciclo então se repete.
+
+Este é apenas um exemplo simples. Em programas do mundo real as maquinas de estados podem ser muito mais complexas, com muitos estados e transições entre eles. Além disso, os eventos que acionam as transições de estado podem ser baseados em uma variedade de fatores, incluindo interações do usuario, recebimento de dados, passagem do tempo, etc.
+
+## Vantagens e Desafios
+
+O uso de Máquina de Estados permite uma maior previsibilidade ao estruturar o nosso sistema, facilitando o teste e o debug da aplicação, porque sempre podemos rastrear o estado atual do sistema quando o bug ocorreu e assim identificar quais comportamentos estão causando tal bug.
+
+Por outro lado, o uso de Máquina de Estados também apresenta alguns desafios, e limitações como a complexidade em sistemas com muitos estados e transições, tornando difícil de gerenciar o sistema.
+
+Em algumas linguagens de programação a implementação de uma Máquina de Estados pode tornar o código repetitivo e muito verboso. Também pode ser difícil lidar com ações que devem ocorrer durante uma transição de estados e não apenas em resposta a um evento em um estado específico.
+
+## Conclusão
+
+A biblioteca de gerenciamento de estados [Redux](https://redux.js.org/) é um bom exemplo do uso de conceitos de uma Máquina de Estados, trazendo todos os benefícios que uma Máquina de Estados pode trazer como a Flexibilidade, Previsibilidade, além da facilidade na depuração, e no rastreamento do Estado.
+
+No entanto, como foi explicado anteriormente, o uso de Máquinas de Estados não é isento de desafios. Embora algumas vezes esses desafios possam parecer desanimadores, eles muitas vezes podem ser mitigados com um design cuidadoso e uma boa compreensão dos conceitos por trás das Máquinas de Estados.
+
+Finalmente é importante ressaltar que a escolha de usar uma Máquina de Estados depende do problema que se está tentando resolver. Nem todos os problemas se beneficiarão dessa abordagem. Portanto é essencial para nós como programadores entendermos as vantagens e limitações e saber quando e como usá-las efetivamente.
+
+Para saber mais sobre maquinas de estados e gerenciamento de estados veja:
+
+[Máquinas de estado, quando usar, por que e para que? | Medium](https://medium.com/@luiguild/máquinas-de-estado-quando-usar-por-que-e-para-que-39dee6dd8e7c)
+
+[Understanding State Machines | FreeCodeCamp](https://www.freecodecamp.org/news/state-machines-basics-of-computer-science-d42855debc66/)
+
+[Estados globais: diferenças entre Redux e Context API | Alura](https://www.alura.com.br/artigos/estados-globais-diferencas-redux-context-api)
+
+\#MáquinaDeEstados #LógicaDeProgramação #CiênciaDaComputação #Programação #Algoritmos #DesenvolvimentoDeJogos #NPCs #IA #Redux #GerenciamentoDeEstados #EngenhariaDeSoftware #Inovação #Tecnologia #Debug #SoftwareTesting #AprendizadoDeMáquina #IAEmJogos #DesenvolvimentoWeb #JavaScript
