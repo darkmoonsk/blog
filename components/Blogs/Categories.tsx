@@ -8,7 +8,7 @@ import Category from "./Category";
 
 function Categories({ categories, currentSlug }: any) {
   return (
-    <div className="px-20 mt-10 border-t-2 text-dark border-b-2 border-solid border-dark py-4 flex items-start justify-center
+    <div className="px-0 md:px-10 sxl:px-20 mt-10 border-t-2 text-dark dark:text-light border-b-2 border-solid border-dark dark:border-light py-4 flex flex-wrap items-start justify-center
       font-medium 
     ">
       {categories.map((cat: string) => (

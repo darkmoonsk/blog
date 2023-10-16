@@ -6,8 +6,8 @@ import ViewCounter from "./ViewCounter";
 
 function BlogDetails({ blog, slug: blogSlug }: any) {
   return (
-    <div className="px-10 bg-cyan-700 text-light py-2 flex items-center justify-around flex-wrap text-xl
-      mx-10 rounded-lg shadow-2xl
+    <div className="px-2 md:px-10 bg-cyan-700 dark:bg-cyan-950 text-light py-2 flex items-center justify-around flex-wrap text-lg sm:text-xl
+      mx-5 md:mx-10 rounded-lg shadow-2xl
     ">
       <time>
         {format(parseISO(blog.publishedAt), "d 'de' LLLL, yyyy", {locale: ptBR})}
