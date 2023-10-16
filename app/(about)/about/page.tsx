@@ -13,7 +13,7 @@ function About() {
    <>
     <AboutCoverSection />
     <Skills />
-    <h2 className="mt-8 font-semibold text-2xl self-start mx-20 text-dark">
+    <h2 className="mt-8 font-semibold text-base sm:text-lg md:text-xl lg:text-2xl self-start mx-10 md:mx-15 lg:mx-20 text-dark dark:text-light">
       Tem algum projeto em mente? entre em contato comigo <Link href="/contact" className="!underline underline-offset-2" >aqui</Link>
     </h2>
    </>
