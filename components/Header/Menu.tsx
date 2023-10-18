@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link"
 import { MoonIcon, SunIcon } from "../Icons"
 import { useThemeSwitch } from "../Hooks/useThemeSwitch"
