@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: any) {
 
 function page({ params }: any) {
   const allCategories = ["all"];
-  const blogs = allBlogs.filter((blog) => {
+  const blogs = allBlogs.filter(blog => blog.isPublished === true).filter((blog) => {
     return blog.tags?.some((tag) => {
       const slugified = slug(tag);
       if (!allCategories.includes(slugified)) {

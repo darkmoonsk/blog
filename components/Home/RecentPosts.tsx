@@ -5,7 +5,7 @@ import Link from "next/link";
 import BlogLayoutThree from "../Blogs/BlogLayoutThree";
 
 function RecentPosts({blogs}: any) {
-  const sortedBlogs = sortBlogs(blogs);
+  const sortedBlogs = sortBlogs(blogs.filter((blog: any) => blog.isPublished === true));
 
   return (
     <section className="w-full mt-16 sm:mt-24 md:mt-32 px-5 sm:px-10 md:px-24 sxl:px-32 flex flex-col item-center justify-center">

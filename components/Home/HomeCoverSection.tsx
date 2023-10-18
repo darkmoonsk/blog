@@ -6,7 +6,7 @@ import GithubSlugger, { slug }  from "github-slugger";
 
 
 function HomeCoverSection({ blogs }: any) {
-  const sortedBlogs = sortBlogs(blogs);
+  const sortedBlogs = sortBlogs(blogs.filter((blog: any) => blog.isPublished === true));
   const blog = sortedBlogs[0];
 
   return (
