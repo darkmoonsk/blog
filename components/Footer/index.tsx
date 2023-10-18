@@ -15,7 +15,8 @@ function Footer() {
     formState: { errors },
   } = useForm();
   const onSubmit = (data: {}) => console.log(data);
-  console.log(errors);
+  // console.log(errors);
+  // TODO: Manipulação de erros e formulario funcional
 
   const iconAnimation = "hover:scale-125 transition-all ease-in-out duration-200";
 
