@@ -1,11 +1,16 @@
 "use client"
 import Logo from "./Logo";
-import { GithubIcon, LinkedinIcon, MoonIcon, SunIcon } from "../Icons";
+import LinkedinIcon from "../Icons/LinkedinIcon";
+import GithubIcon from "../Icons/GithubIcon";
 import portfolioImage from "@/public/portfolio.png";
 import Image from "next/image";
 import siteMetaData from "@/utils/siteMetaData";
 import { useState } from "react";
-import Menu from "./Menu";
+import dynamic from "next/dynamic";
+
+const Menu = dynamic(() => import('@/components/Header/Menu'), {
+  ssr: false,
+})
 
 function Header() {
   const [click, setClick] = useState(false);

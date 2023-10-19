@@ -1,8 +1,15 @@
 "use client"
 import Link from "next/link"
-import { MoonIcon, SunIcon } from "../Icons"
 import { useThemeSwitch } from "../Hooks/useThemeSwitch"
 import { cx } from "@/utils";
+import dynamic from 'next/dynamic';
+
+const SunIcon = dynamic(() => import('@/components/Icons/SunIcon'), {
+  ssr: false,
+});
+const MoonIcon = dynamic(() => import('@/components/Icons/MoonIcon'), {
+  ssr: false,
+});
 
 interface MenuProps {
   isActive?: boolean
@@ -39,11 +46,14 @@ function Menu({ isActive } : MenuProps ) {
           "bg-light text-dark"
           )}
         >
+          <>
           {
+            
             mode === "light" ?
-            <SunIcon className /> :
-            <MoonIcon className />
+            <SunIcon /> :
+            <MoonIcon />
           }
+          </>
         </button>
       </nav>
   )
