@@ -2,7 +2,7 @@
 
 O projeto está organizado da seguinte maneira:
 
-- (`app`)[./app.md] - rotas do blog
+- (`app`)[https://github.com/darkmoonsk/blog/blob/main/docs/app.md] - rotas do blog
 - `components`
     - `About` - Componentes relacionados com a pagina sobre
     - `Blogs` - Componentes usados para renderizar os blog posts e o conteúdo do blog em si.
