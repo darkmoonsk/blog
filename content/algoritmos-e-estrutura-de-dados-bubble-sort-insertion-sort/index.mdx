@@ -117,24 +117,24 @@ Para finalizar retornamos o array ordenado. Este algoritmo é bem simples, tudo 
 
 ```jsx
 function bubbleSort(array) {
-	const n = array.length;
-	for(let i = 0; i < n; i++) {
-		let swapped = false;
-		
-		for(let j = 0; j < n - i + 1; j++) {
-			if(array[j] > array[j + 1]) {
-	      [array[j], array[j + 1]] = [array[j + 1], array[j]];
-	      
-        swapped = true;
-      }
-		}
+    const n = array.length;
 
-		if(!swapped) {
-	    break;
-	  }
-	}
+    for (let i = 0; i < n; i++) {
+        let swapped = false;
 
-	return array;
+        for (let j = 0; j < n - i - 1; j++) {
+            if(array[j] > array[j + 1]) {
+                [array[j], array[j + 1]] = [array[j + 1], array[j]];
+                swapped = true;
+            }
+        }
+
+        if(!swapped) {
+            break;
+        }
+    }
+    
+    return array;
 }
 ```
 
