@@ -8,6 +8,7 @@ interface GithubIconProps {
 function GithubIcon({ className, ...rest }: GithubIconProps) {
   return (
     <svg
+      data-testid="github-icon"
       xmlns="http://www.w3.org/2000/svg"
       width={42}
       height={44}

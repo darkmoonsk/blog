@@ -2,7 +2,7 @@
 import Logo from "./Logo";
 import LinkedinIcon from "../Icons/LinkedinIcon";
 import GithubIcon from "../Icons/GithubIcon";
-import portfolioImage from "@/public/portfolio.png";
+import portfolioImg from "../../../public/portfolio.png";
 import Image from "next/image";
 import siteMetaData from "@/utils/siteMetaData";
 import { useState } from "react";
@@ -23,7 +23,7 @@ function Header() {
   return (
     <header className="w-full p-4 px-5 sm:px-10 flex items-center justify-between">
       <Logo />
-      <button className="fixed right-6 top-4 cursor-pointer lg:hidden z-50 bg-light"
+      <button data-testid="sandwich-btn" className="fixed right-6 top-4 cursor-pointer lg:hidden z-50 bg-light"
       onClick={toggleClick}
       >
         <div className="w-6 transition-all ease duration-300">
@@ -85,7 +85,9 @@ function Header() {
           target="_blank"
           className="flex items-center text-dark dark:text-light"
         >
-          <Image src = {portfolioImage} alt="Logo do portfolio"
+          <Image src={portfolioImg} alt="Logo do portfolio"
+            width={64}
+            height={64}
             className={`
             inline-block w-6 h-6 mr-2
             ${iconAnimation}

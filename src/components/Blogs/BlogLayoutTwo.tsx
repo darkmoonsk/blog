@@ -11,7 +11,7 @@ function BlogLayoutTwo({ blog }: any) {
     <div className="cursor-pointer group grid grid-cols-12 gap-4 items-center text-dark dark:text-light">
       <Link href={blog.url_path} className="col-span-12 lg:col-span-4 h-full rounded-xl overflow-hidden" >
       <Image
-          src={blog.image.filePath.replace("../public", "")}
+          src={blog.image.filePath.replace("../src/public", "")}
           alt={blog.title}
           width={blog.image.width}
           height={blog.image.height}

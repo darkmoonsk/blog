@@ -7,7 +7,7 @@ function BlogLayoutThree({ blog }: any) {
     <div className="cursor-pointer group flex flex-col items-center it text-dark dark:text-light">
       <Link href={blog.url_path} className="h-full rounded-xl overflow-hidden" >
       <Image 
-          src={blog.image.filePath.replace("../public", "")}
+          src={blog.image.filePath.replace("../src/public", "")}
           alt={blog.title}
           width={blog.image.width}
           height={blog.image.height}

@@ -1,7 +1,7 @@
 "use client";
 import LinkedinIcon from "../Icons/LinkedinIcon";
 import GithubIcon from "../Icons/GithubIcon";
-import portfolioImage from "@/public/portfolio.png";
+import portfolioImg from "../../../public/portfolio.png";
 import Image from "next/image";
 import Link from "next/link";
 import siteMetaData from "@/utils/siteMetaData";
@@ -59,8 +59,10 @@ function Footer() {
           className="flex items-center drop-shadow-2xl"
         >
           <Image
-            src={portfolioImage}
+            src={portfolioImg}
             alt="Logo do portfolio"
+            width={64}
+            height={64}
             className={`
             inline-block w-6 h-6 mr-2 
             ${iconAnimation}

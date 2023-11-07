@@ -13,7 +13,7 @@ function BlogLayoutOne({blog}: any) {
           bg-gradient-to-b from-transparent from-0% to-dark/90 rounded-xl z-10
         " />
         <Image
-          src={blog.image.filePath.replace("../public", "")}
+          src={blog.image.filePath.replace("../src/public", "")}
           alt={blog.title}
           width={blog.image.width}
           height={blog.image.height}

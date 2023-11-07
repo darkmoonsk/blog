@@ -20,7 +20,7 @@ export default function ContactForm() {
       <input
         type="text"
         placeholder="Nome"
-        {...register("Seu Nome", { required: true, maxLength: 80 })}
+        {...register("nome", { required: true, maxLength: 80 })}
         className="outline-none border-0 p-0 mx-2 focus:ring-0 placeholder:text-center placeholder:text-lg border-b
         border-gray focus:border-gray bg-transparent
         "
@@ -29,7 +29,7 @@ export default function ContactForm() {
       <input
         type="text"
         placeholder="Email"
-        {...register("Email", { required: true })}
+        {...register("email", { required: true })}
         className="outline-none border-0 p-0 mx-2 focus:ring-0 placeholder:text-center placeholder:text-lg border-b
        border-gray focus:border-gray bg-transparent
        "
@@ -38,14 +38,14 @@ export default function ContactForm() {
       <input
         type="number"
         placeholder="Whatsapp"
-        {...register}
+        {...register("whatsapp", { required: true })}
         className="outline-none border-0 p-0 mx-2 focus:ring-0 placeholder:text-center placeholder:text-lg border-b
         border-gray focus:border-gray bg-transparent
         "
       />
       Aqui está os detalhes sobre o meu projeto <br/>
       <textarea
-        {...register("Detalhes do projeto", {})}
+        {...register("description", {})}
         rows={3}
         placeholder="Meu projeto é sobre..."
         className="w-full resize-none outline-none border-0 p-0 mx-2 focus:ring-0 placeholder:text-lg border-b

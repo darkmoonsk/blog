@@ -18,7 +18,7 @@ function HomeCoverSection({ blogs }: any) {
           bg-gradient-to-b from-transparent from-0% to-dark rounded-3xl z-10
         " />
         <Image
-          src={blog.image.filePath.replace("../public", "")}
+          src={blog.image.filePath.replace("../src/public", "")}
           alt={blog.title}
           fill
           className="w-full h-full object-center object-cover rounded-3xl z-0"
