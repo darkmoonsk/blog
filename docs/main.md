@@ -4,8 +4,8 @@ Este projeto está estruturado da seguinte maneira:
 
 - [`app`](https://github.com/darkmoonsk/blog/blob/main/docs/app.md): Contém as rotas do blog.
 - [`components`](https://github.com/darkmoonsk/blog/blob/main/docs/components.md):
-    - `About`: Componentes associados à página "Sobre".
-    - `Blogs`: Componentes utilizados para renderizar os posts e o conteúdo do blog.
+    - [`About`](https://github.com/darkmoonsk/blog/blob/main/docs/components/about.md): Componentes associados à página "Sobre".
+    - [`Blogs`](https://github.com/darkmoonsk/blog/blob/main/docs/components/blogs.md): Componentes utilizados para renderizar os posts e o conteúdo do blog.
     - `Contact`: Componentes da página de contato, incluindo o formulário e o player LottieAnimation.
     - `Elements`: Componentes mais genéricos, como o componente de tag do blog.
     - `Footer`: Componentes relacionados ao rodapé do blog.
