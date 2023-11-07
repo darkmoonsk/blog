@@ -16,7 +16,7 @@ function Skills() {
   ];
 
   return (
-    <section className="w-full flex flex-col p-10 lg:p-20 border-b-2 border-solid border-dark dark:border-light text-dark dark:text-light">
+    <section data-testid="skills-section" className="w-full flex flex-col p-10 lg:p-20 border-b-2 border-solid border-dark dark:border-light text-dark dark:text-light">
       <span className="font-semibold text-2xl lg:text-4xl text-sky-700">Eu tenho experiencia com...</span>
       <ul className="flex flex-wrap mt-8 justify-center md:justify-start">
         {skillList.map((skill, index) => {
