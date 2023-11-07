@@ -1,5 +1,5 @@
 import Image from "next/image"
-import profileCharacter from "@/public/avatar.jpeg"
+import profileCharacter from "../../../public/avatar.jpeg"
 
 function AboutCoverSection() {
   return (
