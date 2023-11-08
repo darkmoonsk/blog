@@ -103,7 +103,7 @@ export default function BlogPage({ params }: any) {
         </div>
         <div className="absolute top-0 left-0 right-0 bottom-0 h-full bg-dark/60 dark:bg-dark/40" />
           <Image
-            src={blog.image?.filePath.replace("../src/public", "") || ""}
+            src={blog.image?.filePath.replace("../public", "") || ""}
             alt={blog.title}
             width={blog.image?.width}
             height={blog.image?.height}
