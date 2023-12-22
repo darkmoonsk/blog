@@ -1,5 +1,7 @@
 "use client"
+import { translations } from "@/utils"
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs"
+import { useLocale } from "next-intl"
 import { useEffect, useState } from "react"
 
 const supabase = createClientComponentClient()
@@ -12,6 +14,8 @@ interface ViewCounterProps {
 
 function ViewCounter( { slug, noCount, showCount = true }: ViewCounterProps) {
   const [views, setViews] = useState(0);
+  const locale = useLocale();
+  const t = translations(locale).BlogDetails;
 
   useEffect(() => {
     const incrementView = async () => {
@@ -62,7 +66,7 @@ function ViewCounter( { slug, noCount, showCount = true }: ViewCounterProps) {
   }, [slug])
   
   if(showCount) {
-    return <div className="text-base">{views} <span className="text-sm">visualizações</span></div>
+    return <div className="text-base">{views} <span className="text-sm">{t.views}</span></div>
   } else {
     return null;
   }

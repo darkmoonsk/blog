@@ -5,7 +5,6 @@ import { Inter, Manrope } from "next/font/google";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import siteMetaData from "@/utils/siteMetaData";
-import Script from "next/script";
 import ThemeScript from "@/components/ThemeScript";
 
 const inter = Inter({
@@ -56,11 +55,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
+interface Props {
   children: React.ReactNode;
-}) {
+  params: {
+    locale: string;
+  };
+}
+
+export default function LocaleLayout({
+  children, params: {locale}
+}: Props) {
   return (
     <html lang="pt-BR">
       <body
@@ -70,10 +74,10 @@ export default function RootLayout({
           "font-mr bg-light dark:bg-dark"
         )}
       >
-        <ThemeScript />
-        <Header />
-        {children}
-        <Footer />
+          <ThemeScript />
+          <Header />
+          {children}
+          <Footer />
       </body>
     </html>
   );

@@ -3,11 +3,13 @@ import Image from "next/image";
 import Link from "next/link";
 import Tag from "../Elements/Tag";
 import GithubSlugger, { slug }  from "github-slugger";
+import { getLocale } from "next-intl/server";
 
 
-function HomeCoverSection({ blogs }: any) {
+async function HomeCoverSection({ blogs }: any) {
   const sortedBlogs = sortBlogs(blogs.filter((blog: any) => blog.isPublished === true));
   const blog = sortedBlogs[0];
+  const locale = await getLocale();
 
   return (
     <div className="w-full inline-block">
@@ -25,8 +27,8 @@ function HomeCoverSection({ blogs }: any) {
           priority
         />
         <div className="w-full lg:w-3/4 p-6 sm:p-8 md:p-12 lg:p-16 flex flex-col items-start justify-center z-10 text-light">
-          <Tag link={`/categories/${slug(blog.tags[0])}`} name={blog.tags[0]} />
-          <Link href={blog.url_path} className="mt-6">
+          <Tag link={`${locale}/categories/${slug(blog.tags[0])}`} name={blog.tags[0]} />
+          <Link href={locale + blog.url_path} className="mt-6">
           <h1 
           className="
             font-bold capitalize text-light text-lg sm:text-xl md:text-3xl lg:text-4xl

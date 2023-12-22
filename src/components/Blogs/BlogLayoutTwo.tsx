@@ -1,9 +1,10 @@
 import Image from "next/image"
 import Link from "next/link"
-import Tag from "../Elements/Tag"
 import { format } from "date-fns"
+import { getLocale } from "next-intl/server";
 
-function BlogLayoutTwo({ blog }: any) {
+async function BlogLayoutTwo({ blog }: any) {
+  const locale = await getLocale();
 
   if (!blog) return
 
@@ -22,7 +23,7 @@ function BlogLayoutTwo({ blog }: any) {
 
       <div className="col-span-12 lg:col-span-8 w-full">
           <span className="inline-block w-full uppercase text-accent dark:text-accentDark font-semibold text-xs sm:text-sm">{blog.tags[0]}</span>
-          <Link href={blog.url_path} className="inline-block my-1">
+          <Link href={locale + blog.url_path} className="inline-block my-1">
           <h2 
           className="
             font-semibold capitaliz text-base sm:text-lg

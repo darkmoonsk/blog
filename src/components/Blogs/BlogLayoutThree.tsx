@@ -1,11 +1,14 @@
 import { format } from "date-fns"
+import { getLocale } from "next-intl/server";
 import Image from "next/image"
 import Link from "next/link"
 
-function BlogLayoutThree({ blog }: any) {
+async function BlogLayoutThree({ blog }: any) {
+  const locale = await getLocale();
+
   return (
     <div className="cursor-pointer group flex flex-col items-center it text-dark dark:text-light">
-      <Link href={blog.url_path} className="h-full rounded-xl overflow-hidden" >
+      <Link href={locale + blog.url_path} className="h-full rounded-xl overflow-hidden" >
       <Image 
           src={blog.image.filePath.replace("../public", "")}
           alt={blog.title}
@@ -18,7 +21,7 @@ function BlogLayoutThree({ blog }: any) {
 
       <div className="flex flex-col w-full">
           <span className="uppercase mt-1 text-accent dark:text-accentDark font-semibold text-xs sm:text-sm">{blog.tags[0]}</span>
-          <Link href={blog.url_path} className="inline-block my-1">
+          <Link href={locale + blog.url_path} className="inline-block my-1">
           <h2 
           className="
             font-semibold capitaliz text-base sm:text-lg
@@ -40,4 +43,4 @@ function BlogLayoutThree({ blog }: any) {
   )
 }
 
-export default BlogLayoutThree
+export default BlogLayoutThree;

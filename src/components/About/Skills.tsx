@@ -1,5 +1,8 @@
+import { translations } from "@/utils";
+import { useLocale } from "next-intl";
+
 function Skills() {
-  const skillList = [
+  const skillListPTBR = [
     "React",
     "Node.js",
     "Next.js",
@@ -14,10 +17,30 @@ function Skills() {
     "Styled Components",
     "Animação Web",
   ];
+  const skillListES = [
+    "React",
+    "Node.js",
+    "Next.js",
+    "JavaScript",
+    "TypeScript",
+    "Python",
+    "Java",
+    "IA Generativa",
+    "Diseño Web",
+    "Firebase",
+    "TailwindCSS",
+    "Styled Components",
+    "Animación Web",
+  ];
+  
+  const locale = useLocale();
+  const t = translations(locale).About;
+
+  const skillList = locale === "pt-br" ? skillListPTBR : skillListES;
 
   return (
     <section data-testid="skills-section" className="w-full flex flex-col p-10 lg:p-20 border-b-2 border-solid border-dark dark:border-light text-dark dark:text-light">
-      <span className="font-semibold text-2xl lg:text-4xl text-sky-700">Eu tenho experiencia com...</span>
+      <span className="font-semibold text-2xl lg:text-4xl text-sky-700">{t.experience}</span>
       <ul className="flex flex-wrap mt-8 justify-center md:justify-start">
         {skillList.map((skill, index) => {
           return (

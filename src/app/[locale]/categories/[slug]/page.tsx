@@ -1,7 +1,10 @@
-import { allBlogs } from "../../../../.contentlayer/generated";
+import { allBlogs } from "../../../../../.contentlayer/generated";
 import BlogLayoutThree from "@/components/Blogs/BlogLayoutThree";
 import Categories from "@/components/Blogs/Categories";
+import { translations } from "@/utils";
 import GithubSlugger, { slug } from "github-slugger";
+import { useLocale } from "next-intl";
+import { getLocale } from "next-intl/server";
 
 const slugger = new GithubSlugger()
 
@@ -25,16 +28,20 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: any) {
+  const locale = await getLocale();
+  const t = translations(locale).Categories;
 
   return {
     title: `${params.slug.replaceAll("-", " ")} Blogs`,
-    description: `Aprenda mais sobre ${params.slug === "all" ? "Desenvolvimento Web" : params.slug} por meio da nossa coleção de blog posts e tutoriais.`,
+    description: `${t.metaDescriptionPT1} ${params.slug === "all" ? t.metaDescriptionPT2 : params.slug} ${t.metaDescriptionPT3}.`,
   }
 }
 
 function page({ params }: any) {
+  const locale = useLocale();
+  const t = translations(locale).Categories;
   const allCategories = ["all"];
-  const blogs = allBlogs.filter(blog => blog.isPublished === true).filter((blog) => {
+  const blogs = allBlogs.filter(blog => blog.isPublished === true && blog.lang === locale).filter((blog) => {
     return blog.tags?.some((tag) => {
       const slugified = slug(tag);
       if (!allCategories.includes(slugified)) {
@@ -53,7 +60,7 @@ function page({ params }: any) {
       <div className="px-5 sm:px-10 md:px-24 sxl:px-32 flex flex-col">
         <h1 className="mt-6 font-semibold text-2xl md-text-4xl lg:text-5xl">#{params.slug}</h1>
         <span className="mt-2 inline-block">
-          Encontre novos temas e expanda o seu conhecimento!
+          {t.description}
         </span>
       </div>
 

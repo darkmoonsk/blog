@@ -2,16 +2,18 @@ import { allBlogs } from "@../../.contentlayer/generated"
 import BlogDetails from "@/components/Blogs/BlogDetails";
 import RenderMdx from "@/components/Blogs/RenderMdx";
 import Tag from "@/components/Elements/Tag";
+import { translations } from "@/utils";
 import siteMetaData from "@/utils/siteMetaData";
 import { slug } from "github-slugger";
+import { useLocale } from "next-intl";
 import Image from "next/image";
 
 export async function generateStaticParams() {
-  return allBlogs.map(blog => ({ slug: blog._raw.flattenedPath }));
+  return allBlogs.map(blog => ({ slug: blog._raw.flattenedPath.replace(/^[^\/]*\//, '') }));
 }
 
 export async function generateMetadata({ params }: any) {
-  const blog = allBlogs.find(blog => blog._raw.flattenedPath === params.slug);
+  const blog = allBlogs.find(blog => blog._raw.flattenedPath.replace(/^[^\/]*\//, '') === params.slug);
 
   if(!blog) return
 
@@ -53,8 +55,9 @@ export async function generateMetadata({ params }: any) {
 }
 
 export default function BlogPage({ params }: any) {
-
-  const blog = allBlogs.find(blog => blog._raw.flattenedPath === params.slug);
+  const locale = useLocale();
+  const t = translations(locale).Blog;
+  const blog = allBlogs.find(blog => blog._raw.flattenedPath.replace(/^[^\/]*\//, '') === params.slug);
 
   let imageList = [siteMetaData.socialBanner];
   if(blog?.image) {
@@ -118,7 +121,7 @@ export default function BlogPage({ params }: any) {
             <details className="border-[1px] border-solid border-dark dark:border-light text-dark dark:text-light rounded-lg p-4 sticky top-6
               max-h-[80vh] overflow-hidden overflow-y-auto
             " open >
-              <summary className="text-lg font-semibold capitalize cursor-pointer">Conteúdo</summary>
+              <summary className="text-lg font-semibold capitalize cursor-pointer">{t.summary}</summary>
               <ul className="mt-4 font-in text-base">
                 {
                   blog?.toc.map((heading: any) => {
