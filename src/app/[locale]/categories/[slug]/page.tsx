@@ -37,7 +37,7 @@ export async function generateMetadata({ params }: any) {
   }
 }
 
-function page({ params }: any) {
+function Page({ params }: any) {
   const locale = useLocale();
   const t = translations(locale).Categories;
   const allCategories = ["all"];
@@ -77,4 +77,4 @@ function page({ params }: any) {
   );
 }
 
-export default page;
+export default Page;
