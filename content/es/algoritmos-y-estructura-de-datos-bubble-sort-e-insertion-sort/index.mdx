@@ -1,0 +1,230 @@
+---
+title: "Algoritmos y Estructura de Datos: Bubble Sort e Insertion Sort"
+lang: "es"
+description: "En este artículo, exploramos los algoritmos de ordenación, centrándonos en el Bubble Sort y el Insertion Sort. El viaje comienza con una introducción básica sobre algoritmos de ordenación, seguida de un análisis detallado y visual del funcionamiento del Bubble Sort y el Insertion Sort. Además, reflexionamos sobre la importancia de aprender diferentes algoritmos y cómo cultivan un pensamiento analítico robusto, esencial para cualquier desarrollador de software."
+image: "../../../public/blogs/algorithms-data-structure-insertion-sort-bubble-sort.jpg"
+publishedAt: "2023-11-02"
+updatedAt: "2023-11-02"
+author: "Bruno Souza"
+isPublished: true
+tags: 
+- algoritmos y estructura de datos
+---
+
+Uno de los tipos más comunes e importantes de algoritmos que encontramos son los algoritmos de ordenación. Hoy, dejando un poco de lado el tema las estructuras de datos, veremos dos algoritmos de ordenación: Bubble Sort e Insertion Sort.
+
+## ¿Qué son los algoritmos de ordenación?
+
+Los algoritmos de ordenación son un conjunto de instrucciones que generalmente reciben una matriz o lista como entrada y la organizan en un orden específico. Las ordenaciones más comunes son numéricas o alfabéticas.
+
+Por ejemplo, supongamos que tenemos la siguiente matriz para ordenar:
+
+ 
+
+```jsx
+const arr = [45, 15, 6, 13, 11, 2, 9, 1]
+```
+
+Tu algoritmo debería ser capaz de devolver el siguiente resultado:
+
+```jsx
+[1, 2, 6, 9, 11, 13, 15, 45]
+```
+
+¿Cómo podríamos llegar a este resultado? Hoy veremos dos algoritmos que resuelven exactamente este problema.
+
+## Bubble Sort
+
+Bubble Sort o Ordenamiento de burbuja es uno de los algoritmos de ordenación más simples. Su idea se basa en recorrer el arreglo varias veces, reubicando los elementos en cada iteración hasta que todo el arreglo esté ordenado. Mira la imagen a continuación que ilustra su funcionamiento.
+
+<Image 
+  src="/articles/algoritmos-e-estrutura-de-dados-bubble-sort-insertion-sort/bubble-sort.gif"
+  alt="Imagen que muestra las operaciones del algoritmo Bubble Sort"
+  width="300"
+  height="180"
+  sizes="100vw"
+/>
+
+Comenzaremos declarando nuestra función llamada **`bubbleSort`**.
+
+```jsx
+function bubbleSort(array) {
+	const n = array.length;
+}
+```
+
+La función recibe como parámetro una matriz, pasamos la cantidad de elementos de la matriz a la variable n. Luego, declaramos dos bucles:
+
+```jsx
+function bubbleSort(array) {
+	const n = array.length;
+	for(let i = 0; i < n; i++) {
+		let swapped = false;
+		
+		for(let j = 0; j < n - i + 1; j++) {
+			
+		}
+
+		if(!swapped) {
+	    break;
+	  }
+	}
+}
+```
+
+El primer bucle, el bucle externo, recorre todos los elementos de la matriz. El segundo bucle recorre la matriz hasta el último elemento no ordenado. La variable **`swapped`** se utilizará para optimizar el algoritmo. Si ningún elemento se intercambia en una pasada completa a través de la matriz, entonces la matriz ya está ordenada y podemos dejar de ordenar.
+
+```jsx
+function bubbleSort(array) {
+	const n = array.length;
+	for(let i = 0; i < n; i++) {
+		let swapped = false;
+		
+		for(let j = 0; j < n - i + 1; j++) {
+			if(array[j] > array[j + 1]) {
+	      [array[j], array[j + 1]] = [array[j + 1], array[j]];
+	      
+        swapped = true;
+      }
+		}
+
+		if(!swapped) {
+	    break;
+	  }
+	}
+}
+```
+
+Dentro del bucle for interno, realizamos una verificación para determinar si el elemento actual es mayor que el siguiente elemento. Si esto es cierto, intercambiamos estos dos elementos de posición. Estamos utilizando la sintaxis de desestructuración para realizar este intercambio de posiciones, también se puede utilizar una variable auxiliar para hacerlo, como se muestra a continuación:
+
+```jsx
+// ... código anterior
+for(let j = 0; j < n - i + 1; j++) {
+	if(array[j] > array[j + 1]) {
+		const temp = array[j];
+	  array[j] = array[j + 1];
+		array[j + 1] = temp;
+	      
+    swapped = true;
+  }
+}
+// código posterior ...
+```
+
+Para finalizar, devolvemos la matriz ordenada. Este algoritmo es bastante simple, su función es recorrer la matriz varias veces y colocar los elementos más grandes al final de la misma, en orden, hasta que no queden más elementos por ordenar.
+
+```jsx
+function bubbleSort(array) {
+	const n = array.length;
+	for(let i = 0; i < n; i++) {
+		let swapped = false;
+		
+		for(let j = 0; j < n - i + 1; j++) {
+			if(array[j] > array[j + 1]) {
+	      [array[j], array[j + 1]] = [array[j + 1], array[j]];
+	      
+        swapped = true;
+      }
+		}
+
+		if(!swapped) {
+	    break;
+	  }
+	}
+
+	return array;
+}
+```
+
+Este algoritmo no es de los más optimizados debido a que tiene que recorrer varias veces la matriz hasta que logra ordenar todos los elementos, y su eficiencia varía según el grado de desorden de la matriz. En otro artículo de esta serie, veremos cómo saber o calcular la eficiencia de un algoritmo.
+
+### ¿Por qué aprender diferentes algoritmos?
+
+Puedes estar preguntándote, ¿por qué no estudiar solo los algoritmos más "optimizados"? Por varias razones, porque nos ayuda a:
+
+- Aprender diferentes formas de resolver un problema, lo cual es una parte esencial de la programación.
+- Desarrollar una mentalidad analítica y mejorar nuestro pensamiento algorítmico.
+- Encontrar soluciones apropiadas para diferentes problemas, ya que no todos los problemas requieren o se benefician de los algoritmos más optimizados. Sí, no siempre lo más optimizado es lo mejor en todas las situaciones.
+- Y muchas otras razones, que podríamos pasar todo el día enumerando.
+
+## Insertion Sort
+
+Insertion Sort (o "Ordenamiento por Inserción") es una técnica de ordenación que construirá la secuencia ordenada de elementos uno a la vez, comparando siempre cada elemento con los elementos ya ordenados a la izquierda e insertándolo en la posición correcta. También es un algoritmo simple y eficaz para matrices pequeñas, pero se vuelve ineficiente en matrices con muchos elementos.
+
+Para visualizar mejor su funcionamiento, analiza la imagen a continuación:
+
+<Image 
+  src="/articles/algoritmos-e-estrutura-de-dados-bubble-sort-insertion-sort/insertion-sort.gif"
+  alt="Imagen que muestra las operaciones del algoritmo Insertion Sort"
+  width="300"
+  height="180"
+  sizes="100vw"
+/>
+
+Comenzaremos declarando nuestra función **`insertionSort`**, que recibe como parámetro la matriz, y también asignaremos a **`n`** el tamaño de la matriz.
+
+```jsx
+function insertionSort(array) {
+	const n = array.length;
+	
+}
+```
+
+En este algoritmo también necesitaremos dos bucles:
+
+```jsx
+function insertionSort(array) {
+	const n = array.length;
+	for (let i = 1; i < n; i++) {
+     let key = array[i]; 
+     let j = i - 1;
+
+     while (j >= 0 && array[j] > key) {
+       array[j + 1] = array[j]; // Desloca o elemento para a direita.
+       j = j - 1; // Move para a posição anterior.
+     }
+     array[j + 1] = key;
+  }
+}
+```
+
+En el primer bucle, recorremos toda la matriz. La variable **`key`** recibe el elemento que se insertará en la posición correcta y **`j`** se inicializa en la posición del elemento anterior. Observa que comenzamos nuestro bucle desde la segunda posición (1). Luego, iniciamos nuestro bucle **`while`** mientras **`j`** sea mayor o igual a 0 y el elemento actual (**`key`**) sea menor que el elemento en la posición **`j`**.
+
+Dentro del bucle **`while`**, desplazamos el elemento hacia la derecha y movemos **`j`** a la posición anterior, y esto se repite hasta que se cumpla la condición del bucle. Después del bucle interno, se ha creado el espacio correcto para el elemento actual **`key`**, y luego se inserta **`key`** en la posición con la instrucción **`array[j + 1] = key`**.
+
+Después de que el bucle **`for`** recorre todas las posiciones, la matriz estará ordenada, por lo que podemos devolver la matriz.
+
+```jsx
+function insertionSort(array) {
+	const n = array.length;
+	for (let i = 1; i < n; i++) {
+     let key = array[i]; 
+     let j = i - 1;
+
+     while (j >= 0 && array[j] > key) {
+       array[j + 1] = array[j]; 
+       j = j - 1; 
+     }
+     array[j + 1] = key;
+  }
+	return array;
+}
+```
+
+Como hemos visto, el algoritmo Insertion Sort funciona iterando a través de la matriz, comparando cada elemento con los elementos anteriores (a la izquierda), desplazando los elementos mayores hacia la derecha e insertando el elemento actual en la posición correcta. Este proceso se repite hasta obtener una secuencia ordenada.
+
+## Conclusión
+
+Comprender el funcionamiento de los algoritmos es esencial para desarrollar el pensamiento analítico y comprender la resolución de problemas, dos habilidades muy importantes en el campo del desarrollo de software. Se utilizan en el procesamiento y análisis de datos, para resolver problemas relacionados con el backend de aplicaciones, en IA y en muchas otras áreas.
+
+El aprendizaje continuo de algoritmos y estructuras de datos puede marcar la diferencia en el desarrollo profesional.
+
+En el próximo artículo, volveremos a hablar sobre estructuras de datos y analizaremos las listas enlazadas.
+
+### Referências:
+
+[Introduction to Algorithms - Thomas Cormen](https://www.amazon.com/Introduction-Algorithms-fourth-Thomas-Cormen-ebook/dp/B094WZNKP2/)
+
+[Ordenamiento por inserción (Video) - Chio Code](https://www.youtube.com/watch?v=6GU6AGEWYJY)
+
+[Ordenamiento Burbuja (Video) - Chio Code](https://www.youtube.com/watch?v=pqZ04TT15PQ)
