@@ -6,7 +6,7 @@ import { translations } from "@/utils";
 import siteMetaData from "@/utils/siteMetaData";
 import { slug } from "github-slugger";
 import { useLocale } from "next-intl";
-import { unstable_setRequestLocale } from "next-intl/server";
+import { getLocale, unstable_setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 
 export async function generateStaticParams() {
@@ -15,6 +15,7 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: any) {
   const blog = allBlogs.find(blog => blog._raw.flattenedPath.replace(/^[^\/]*\//, '') === params.slug);
+  const locale = await getLocale();
 
   if(!blog) return
 
@@ -38,7 +39,7 @@ export async function generateMetadata({ params }: any) {
     openGraph: {
       title: blog.title,
       description: blog.description + " " + siteMetaData.siteUrl,
-      url: siteMetaData.siteUrl + "/blogs/" + params.slug,
+      url: siteMetaData.siteUrl + `/${locale}` +  "/blogs/" + params.slug,
       siteName: siteMetaData.title,
       locale: 'pt_BR',
       type: 'article',
@@ -78,7 +79,7 @@ export default function BlogPage({ params }: any) {
     "author": [{
         "@type": "Person",
         "name": blog?.author ? [blog.author] : siteMetaData.author,
-        "url": siteMetaData.siteUrl + blog?.url_path
+        "url": siteMetaData.siteUrl + `/${locale}` + blog?.url_path
       }]
   }
 
