@@ -1,0 +1,70 @@
+{
+  "FeaturedPosts": {
+    "title": "Artículos Destacados"
+  },
+  "RecentPosts": {
+    "title": "Artículos Recientes",
+    "link": "Ver todos"
+  },
+  "Menu": {
+    "home": "Inicio",
+    "about": "Acerca de",
+    "contact": "Contacto"
+  },
+  "Header": {
+    "portfolio": "Portafolio"
+  },
+  "Footer": {
+    "title": "Blogs sobre Ciencia & Tecnología",
+    "description": "Suscríbete para aprender sobre nuevas tecnologías y temas interesantes del mundo de la programación y la ciencia.",
+    "portfolio": "Portafolio",
+    "copyright": "Todos los derechos reservados",
+    "sloganPT1": "Hecho con",
+    "sloganPT2": "por"
+  },
+  "ConfirmationPopup": {
+    "title": "¡Inscripción confirmada!",
+    "description": "Pronto comenzarás a recibir los nuevos artículos",
+    "button": "Confirmar"
+  },
+  "NewsLetterForm": {
+    "title": "Suscríbete para recibir nuevos artículos",
+    "required": "El correo electrónico es obligatorio",
+    "inputPlaceholder": "Tu mejor correo electrónico",
+    "invalidEmail": "Correo electrónico inválido",
+    "alreadyRegistered": "Correo electrónico ya registrado",
+    "maxLength": "El correo electrónico debe tener un máximo de 80 caracteres",
+    "button": "Suscríbete"
+  },
+  "About": {
+    "title": "¡Más alto, más lejos, más rápido!",
+    "description": "Soy un programador apasionado por lo que hago, participo en investigación científica y amo escribir sobre lo que me gusta y de lo que hago, como: Programación, Ciencia, Inteligencia Artificial y Juegos. Siempre estoy en busca de proyectos que me desafíen.",
+    "experience": "Tengo experiencia con...",
+    "textToContact": "¿Tienes algún proyecto en mente? contáctame" 
+  },
+  "Contact": {
+    "title": "¡Conectémonos!",
+    "contactFormTextPT1": "¡Hola! mi nombre es",
+    "contactFormTextPT2": "y quiero hablar sobre un posible proyecto. puedes hablar conmigo por el correo electrónico:",
+    "contactFormTextPT3": "o por whatsapp a través del número",
+    "contactFormTextPT4": "Aquí están los detalles sobre mi proyecto"
+  },
+  "SuccessModal": {
+    "title": "¡Mensaje enviado con éxito!",
+    "description": "Pronto me pondré en contacto contigo",
+    "button": "Ok"
+  },
+  "Categories": {
+    "metaDescriptionPT1": "Aprende más sobre",
+    "metaDescriptionPT2": "Desarrollo Web",
+    "metaDescriptionPT3": "a través de nuestra colección de artículos y tutoriales.",
+    "description": "¡Encuentra nuevos temas y expande tu conocimiento!"
+  },
+  "Blog": {
+    "summary": "Contenido"
+  },
+  "BlogDetails": {
+    "views": "visualizaciones",
+    "read": "de lectura"
+  }
+}

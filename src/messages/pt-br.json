@@ -1,0 +1,74 @@
+{
+  "FeaturedPosts": {
+    "title": "Artigos em Destaque"
+  },
+  "RecentPosts": {
+    "title": "Artigos Recentes",
+    "link": "Ver todos"
+  },
+  "Menu": {
+    "home": "Início",
+    "about": "Sobre",
+    "contact": "Contato"
+  },
+  "Header": {
+    "portfolio": "Portfólio"
+  },
+  "Footer": {
+    "title": "Blogs sobre Ciência & Tecnologia",
+    "description": "Se inscreva para aprender sobre novas tecnologias e assuntos interessantes do mundo da programação e da ciência.",
+    "portfolio": "Portfólio",
+    "copyright": "Todos os direitos reservados",
+    "sloganPT1": "Feito com",
+    "sloganPT2": "por"
+  },
+  "ConfirmationPopup": {
+    "title": "Inscrição confirmada!",
+    "description": "Em breve você começará a receber os novos artigos",
+    "button": "Confirmar"
+  },
+  "NewsLetterForm": {
+    "title": "Inscreva-se para receber novos artigos",
+    "required": "Email é obrigatório",
+    "inputPlaceholder": "Seu melhor e-mail",
+    "invalidEmail": "E-mail inválido",
+    "alreadyRegistered": "E-mail já cadastrado",
+    "maxLength": "E-mail deve ter no máximo 80 caracteres",
+  "button": "Inscreva-se"
+  },
+  "About": {
+    "title": "Mais alto, mais longe, mais rapido!",
+    "description": "Sou um programador apaixonado pelo que faz, participo de pesquisa cientifica e amo escrever sobre o que eu gosto e faço, como: Programação, Ciência, Inteligência Artificial e Jogos. Estou sempre em busca de projetos que me desafiem.",
+    "experience": "Eu tenho experiencia com...",
+    "textToContact": "Tem algum projeto em mente? entre em contato comigo" 
+  },
+  "Contact": {
+    "title": "Vamos nos conectar!",
+    "contactFormTextPT1": "Olá! meu nome é",
+    "contactFormTextPT2": "e eu quero falar sobre um possivel projeto. você pode falar comigo pelo e-mail:",
+    "contactFormTextPT3": "ou pelo whatsapp através do numero",
+    "contactFormTextPT4": "Aqui está os detalhes sobre o meu projeto"
+  },
+  "SuccessModal": {
+    "title": "Mensagem enviada com sucesso!",
+    "description": "Em breve entrarei em contato com você",
+    "button": "Ok"
+  },
+  "Categories": {
+    "metaDescriptionPT1": "Aprenda mais sobre",
+    "metaDescriptionPT2": "Desenvolvimento Web",
+    "metaDescriptionPT3": "por meio da nossa coleção de artigos e tutoriais.",
+    "description": "Encontre novos temas e expanda o seu conhecimento!"
+  },
+  "Blog": {
+    "summary": "Conteúdo"
+  },
+  "BlogDetails": {
+    "views": "visualizações",
+    "read": "de leitura"
+  }
+}
+
+
+
+  
