@@ -1,7 +1,12 @@
 import Image from "next/image"
 import profileCharacter from "../../../public/avatar.jpeg"
+import { useLocale } from "next-intl"
+import { translations } from "@/utils";
 
 function AboutCoverSection() {
+  const locale = useLocale();
+  const t = translations(locale).About;
+
   return (
     <section className="w-full border-b-2 border-solid border-dark dark:border-light 
      flex flex-col lg:flex-row items-center justify-center text-dark dark:text-light
@@ -15,12 +20,10 @@ function AboutCoverSection() {
       </div>
       <div className="w-full py-40 lg:py-0 lg:w-2/3 flex flex-col text-left items-start justify-center px-8 lg:px-16">
         <h2 className="font-bold capitalize text-3xl lg:text-6xl">
-          Mais alto, mais longe, mais rapido!
+          {t.title}
         </h2>
         <p className="font-medium capitalize mt-4">
-          Sou um programador apaixonado pelo que faz, participo de pesquisa cientifica e amo escrever 
-          sobre o que eu gosto e faço, como: Programação, Ciência, Inteligência Artificial e Jogos. Estou sempre
-          em busca de projetos que me desafiem. 
+          {t.description}
         </p>
       </div>
     </section>

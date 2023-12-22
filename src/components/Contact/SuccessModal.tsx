@@ -1,9 +1,15 @@
+import { translations } from "@/utils";
+import { useLocale } from "next-intl";
+
 interface SuccessModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
 const SuccessModal = ({ isOpen, onClose }: SuccessModalProps) => {
+  const locale = useLocale();
+  const t = translations(locale).SuccessModal;
+
   if (!isOpen) return null;
 
   return (
@@ -25,10 +31,10 @@ const SuccessModal = ({ isOpen, onClose }: SuccessModalProps) => {
             ></path>
           </svg>
           <h3 className="mb-5 text-2xl font-semibold text-gray-900">
-            Mensagem Enviada!
+            {t.title}
           </h3>
           <p className="mb-2 text-lg text-center text-gray-600">
-            Sua mensagem foi enviada com sucesso. Em breve estarei respondendo em seu E-mail.
+            {t.description}
           </p>
           <p className="mb-5 text-lg text-center text-gray-600">
             
@@ -37,7 +43,7 @@ const SuccessModal = ({ isOpen, onClose }: SuccessModalProps) => {
             onClick={onClose}
             className=" text-light bg-green-500 hover:bg-green-600 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
           >
-            Fechar
+            {t.button}
           </button>
         </div>
       </div>

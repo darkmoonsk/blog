@@ -7,6 +7,8 @@ import Image from "next/image";
 import siteMetaData from "@/utils/siteMetaData";
 import { useState } from "react";
 import dynamic from "next/dynamic";
+import { useLocale } from "next-intl";
+import { translations } from "@/utils";
 
 const Menu = dynamic(() => import('@/components/Header/Menu'), {
   ssr: false,
@@ -15,6 +17,8 @@ const Menu = dynamic(() => import('@/components/Header/Menu'), {
 function Header() {
   const [click, setClick] = useState(false);
   const iconAnimation = "hover:scale-125 transition-all ease-in-out duration-200";
+  const locale = useLocale();
+  const t = translations(locale).Header;
 
   const toggleClick = () => {
     setClick(!click);
@@ -93,7 +97,7 @@ function Header() {
             ${iconAnimation}
             `}
           />
-          Portfolio
+          {t.portfolio}
         </a>
       </div>
     </header>

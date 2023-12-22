@@ -9,13 +9,17 @@ import { group } from "console";
 
 const Blog = defineDocumentType(() => ({
   name: "Blog",
-  filePathPattern: "**/**/*.mdx",
+  filePathPattern: "**/**/**/*.mdx",
   contentType: "mdx",
   fields: {
     title: {
       type: "string",
       required: true,
     },
+    lang: {
+      type: "string",
+      required: true,
+     },
     publishedAt: {
       type: "date",
       required: true,
@@ -45,7 +49,7 @@ const Blog = defineDocumentType(() => ({
   computedFields: {
     url_path: {
       type: "string",
-      resolve: (doc) => `/blogs/${doc._raw.flattenedPath}`,
+      resolve: (doc) => `/blogs/${doc._raw.flattenedPath.replace(/^[^\/]*\//, '')}`,
     },
     readingTime: {
       type: "json",

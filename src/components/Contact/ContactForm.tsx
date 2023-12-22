@@ -3,8 +3,12 @@ import sendEmailParams from "@/app/models/sendEmailParams";
 import { useForm } from "react-hook-form";
 import SuccessModal from "./SuccessModal";
 import { useState } from "react";
+import { useLocale } from "next-intl";
+import { translations } from "@/utils";
 
 export default function ContactForm() {
+  const locale = useLocale();
+  const t = translations(locale).Contact;
   const {
     register,
     handleSubmit,
@@ -46,7 +50,7 @@ export default function ContactForm() {
         onSubmit={handleSubmit(onSubmit)}
         className="mt-12 text-xl font-medium leading-relaxed font-in"
       >
-        Olá! meu nome é{" "}
+        {t.contactFormTextPT1}
         <input
           type="text"
           placeholder="Nome"
@@ -55,7 +59,7 @@ export default function ContactForm() {
           border-gray focus:border-gray bg-transparent
           "
         />
-        e eu quero falar sobre um possivel projeto. você pode falar comigo pelo e-mail:
+        {t.contactFormTextPT2}
         <input
           type="text"
           placeholder="Email"
@@ -64,7 +68,7 @@ export default function ContactForm() {
         border-gray focus:border-gray bg-transparent
         "
         />
-        ou pelo whatsapp através do numero
+        {t.contactFormTextPT3}
         <input
           type="number"
           placeholder="Whatsapp"
@@ -73,7 +77,7 @@ export default function ContactForm() {
           border-gray focus:border-gray bg-transparent
           "
         />
-        Aqui está os detalhes sobre o meu projeto <br/>
+        {t.contactFormTextPT4} <br/>
         <textarea
           {...register("description", {})}
           rows={3}
