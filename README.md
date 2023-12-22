@@ -1,5 +1,7 @@
 # Blog Next.js
 
+![social-banner](https://github.com/darkmoonsk/blog/assets/101902194/069d3312-0fef-4f56-9a73-f3d97108d19f)
+
 Este é um projeto de blog construído com Next.js, usando diversas tecnologias como Tailwind CSS, Typescript e Content Layer.
 
 ## Como rodar o projeto
