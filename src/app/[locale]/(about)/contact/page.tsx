@@ -4,13 +4,15 @@ import { translations } from "@/utils";
 import siteMetaData from "@/utils/siteMetaData";
 import { Metadata } from "next";
 import { useLocale } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 export const metadata: Metadata = {
   title: "Entre em Contato",
   description: `Me contate por meio do formulario disponivel nesta pagina ou email em ${siteMetaData.email}`,
 };
 
-function Contact() {
+function Contact({ params }: any) {
+  unstable_setRequestLocale(params.locale);
   const locale = useLocale();
   const t = translations(locale).Contact;
 

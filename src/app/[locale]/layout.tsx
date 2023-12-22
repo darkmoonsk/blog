@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import siteMetaData from "@/utils/siteMetaData";
 import ThemeScript from "@/components/ThemeScript";
+import { unstable_setRequestLocale } from "next-intl/server";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -55,6 +56,12 @@ export const metadata: Metadata = {
   },
 };
 
+const locales = ["pt-br", "es"];
+ 
+export function generateStaticParams() {
+  return locales.map((locale) => ({locale}));
+}
+
 interface Props {
   children: React.ReactNode;
   params: {
@@ -65,6 +72,8 @@ interface Props {
 export default function LocaleLayout({
   children, params: {locale}
 }: Props) {
+
+  unstable_setRequestLocale(locale);
   return (
     <html lang="pt-BR">
       <body

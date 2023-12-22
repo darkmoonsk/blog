@@ -3,6 +3,7 @@ import Skills from "@/components/About/Skills"
 import { translations } from "@/utils";
 import { Metadata } from "next";
 import { useLocale } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 import Link from "next/link"
 
 export const metadata: Metadata = {
@@ -10,7 +11,8 @@ export const metadata: Metadata = {
   description: `Veja alguns detalhes sobre mim`,
 };
 
-function About() {
+function About({params}: any) {
+  unstable_setRequestLocale(params.locale);
   const locale = useLocale();
   const t = translations(locale).About;
 

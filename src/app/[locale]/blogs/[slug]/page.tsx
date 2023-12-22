@@ -6,6 +6,7 @@ import { translations } from "@/utils";
 import siteMetaData from "@/utils/siteMetaData";
 import { slug } from "github-slugger";
 import { useLocale } from "next-intl";
+import { unstable_setRequestLocale } from "next-intl/server";
 import Image from "next/image";
 
 export async function generateStaticParams() {
@@ -55,6 +56,7 @@ export async function generateMetadata({ params }: any) {
 }
 
 export default function BlogPage({ params }: any) {
+  unstable_setRequestLocale(params.locale);
   const locale = useLocale();
   const t = translations(locale).Blog;
   const blog = allBlogs.find(blog => blog._raw.flattenedPath.replace(/^[^\/]*\//, '') === params.slug);

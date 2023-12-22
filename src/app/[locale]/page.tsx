@@ -2,9 +2,10 @@ import HomeCoverSection from "@/components/Home/HomeCoverSection"
 import { allBlogs } from "../../../.contentlayer/generated"
 import FeaturedPosts from "@/components/Home/FeaturedPosts"
 import RecentPosts from "@/components/Home/RecentPosts"
-import { getLocale } from "next-intl/server";
+import { getLocale, unstable_setRequestLocale } from "next-intl/server";
 
-export default async function Home() {
+export default async function Home({ params }: any) {
+  unstable_setRequestLocale(params.locale);
   const locale = await getLocale();
   const blogs = allBlogs.filter(blog => blog.lang.toLowerCase() === locale);
 

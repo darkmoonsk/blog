@@ -4,7 +4,7 @@ import Categories from "@/components/Blogs/Categories";
 import { translations } from "@/utils";
 import GithubSlugger, { slug } from "github-slugger";
 import { useLocale } from "next-intl";
-import { getLocale } from "next-intl/server";
+import { getLocale, unstable_setRequestLocale } from "next-intl/server";
 
 const slugger = new GithubSlugger()
 
@@ -38,6 +38,7 @@ export async function generateMetadata({ params }: any) {
 }
 
 function Page({ params }: any) {
+  unstable_setRequestLocale(params.locale);
   const locale = useLocale();
   const t = translations(locale).Categories;
   const allCategories = ["all"];
