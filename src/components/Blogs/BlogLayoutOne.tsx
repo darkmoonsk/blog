@@ -2,8 +2,10 @@ import Image from "next/image"
 import Tag from "../Elements/Tag"
 import Link from "next/link"
 import { slug } from "github-slugger"
+import { getLocale } from "next-intl/server";
 
-function BlogLayoutOne({blog}: any) {
+async function BlogLayoutOne({blog}: any) {
+  const locale = await getLocale();
 
   return (
     <div className="cursor-pointer group inline-block overflow-hidden rounded-xl">
@@ -22,10 +24,10 @@ function BlogLayoutOne({blog}: any) {
         />
         
         <div className="w-full absolute bottom-0 p-4 xs:p-6 sm:p-10 z-20">
-          <Tag link={`/categories/${slug(blog.tags[0])}`} name={blog.tags[0]} 
+          <Tag link={`${locale}/categories/${slug(blog.tags[0])}`} name={blog.tags[0]} 
             className="px-6 text-xs sm:text-sm py-1 sm:py-2 !border"
           />
-          <Link href={blog.url_path} className="mt-6">
+          <Link href={locale + blog.url_path} className="mt-6">
           <h2 
           className="
             font-bold capitalize text-light text-sm xs:text-base sm:text-xl md:text-2xl mt-3 sm:mt-5

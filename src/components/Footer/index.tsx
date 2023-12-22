@@ -6,12 +6,15 @@ import Image from "next/image";
 import Link from "next/link";
 import siteMetaData from "@/utils/siteMetaData";
 import NewsLetterForm from "./NewsLetterForm";
+import { useLocale } from "next-intl";
+import { translations } from "@/utils";
 
 
 function Footer() {
   const year = new Date().getFullYear();
-
   const iconAnimation = "hover:scale-125 transition-all ease-in-out duration-200";
+  const locale = useLocale();
+  const t = translations(locale).Footer;
 
   return (
     <footer
@@ -21,11 +24,10 @@ function Footer() {
       }}
     >
       <h3 className="mt-16 font-medium text-center capitalize text-2xl sm:text-3xl lg:text-4xl px-2 sm:px-4">
-        Blogs sobre Ciência & Tecnologia
+        {t.title}
       </h3>
       <p className="mt-5 px-4 text-center w-full sm:w-3/5 font-light text-sm sm:text-base">
-        Se inscreva para aprender sobre novas tecnologias e assuntos interessantes do mundo da
-        programação e da ciência.
+        {t.description}
       </p>
 
       <NewsLetterForm />
@@ -68,18 +70,18 @@ function Footer() {
             ${iconAnimation}
             `}
           />
-          Portfolio
+          {t.portfolio}
         </a>
       </div>
       <div className="w-full rounded-b-2xl bg-blue-950/80 p-5 mx-8 flex flex-col gap-3 items-center text-center lg:flex-row lg:justify-between">
         <span className="font-semibold text-transparent bg-gradient-to-tr from-slate-100 to-sky-300 bg-clip-text">
-          &copy; {year} Bruno Souza. Todos os direitos reservados
+          &copy; {year} Bruno Souza. {t.copyright}
         </span>
         <Link href="/sitemap-0.xml" className="underline">
           sitemap.xml
         </Link>
         <span>
-          Feito com &hearts; por <a href="#">Bruno Souza</a>
+          {t.sloganPT1} &hearts; {t.sloganPT2} <a href="#">Bruno Souza</a>
         </span>
       </div>
     </footer>

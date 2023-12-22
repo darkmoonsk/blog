@@ -3,6 +3,8 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { ErrorMessage } from '@hookform/error-message';
 import ConfirmationPopup from "./ConfirmationPopup";
 import { useState } from "react";
+import { useLocale } from "next-intl";
+import { translations } from "@/utils";
 
 interface FormInputs {
   email: string
@@ -11,6 +13,8 @@ interface FormInputs {
 function NewsLetterForm() {
   const supabase = createClientComponentClient();
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const locale = useLocale();
+  const t = translations(locale).NewsLetterForm;
 
   function toggleConfirmation() {
     setShowConfirmation(!showConfirmation);
@@ -43,7 +47,7 @@ function NewsLetterForm() {
       // Se o e-mail já está inscrito, defina um erro no campo de e-mail
       setError('email', {
         type: 'validate',
-        message: 'E-mail já está inscrito',
+        message: t.alreadyRegistered,
       });
     } else {
       // Inscrever o novo e-mail
@@ -71,19 +75,20 @@ function NewsLetterForm() {
           <div className="flex flex-col sm:flex-row">
             <input
               type="email"
-              placeholder="Escreva o seu e-mail"
+              placeholder={t.inputPlaceholder}
               {...register("email", { 
-                required: "E-mail é obrigatório", 
-                maxLength: { value: 80, message: "E-mail deve ter no máximo 80 caracteres" }, 
+                required: t.required, 
+                maxLength: { value: 80, message: t.maxLength }, 
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: "E-mail inválido"
+                  message: t.invalidEmail
                 },
               })}
               className="w-full bg-transparent placeholder:text-xs sm:placeholder:text-lg text-dark focus:border-dark focus:ring-0 border-0 border-b mr-2 pb-1"
             />
             <input
               type="submit"
+              value={t.button}
               className="bg-dark text-light cursor-pointer font-medium rounded px-3 sm:px-5 py-1"
             />
           </div>

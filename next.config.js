@@ -1,11 +1,12 @@
 /** @type {import('next').NextConfig} */
 
 const { withContentlayer } = require("next-contentlayer");
+const withNextIntl = require('next-intl/plugin')();
 
 const nextConfig = {
   compiler: {
-    removeConsole: true,
-  }
+    removeConsole: false,
+  },
 }
 
-module.exports = withContentlayer({...nextConfig});
+module.exports = withNextIntl(withContentlayer({...nextConfig}));

@@ -1,0 +1,347 @@
+---
+title: "Algoritmos y Estructura de Datos: Pilas"
+lang: "es"
+description: "¿Te has preguntado alguna vez sobre la importancia de los algoritmos y las estructuras de datos en el mundo del desarrollo de software? En este artículo, nos sumergimos profundamente en la estructura de datos pila, explicando su funcionamiento e importancia, con ejemplos prácticos en JavaScript."
+image: "../../../public/blogs/data-structure.jpg"
+publishedAt: "2023-10-12"
+updatedAt: "2023-10-12"
+author: "Bruno Souza"
+isPublished: true
+tags: 
+- algoritmos y estructura de datos
+---
+
+**Algoritmos y Estructura de Datos** es, con mucho, la disciplina más importante en la ciencia de la computación, ya que encontrar el algoritmo ideal para resolver un problema forma la base del desarrollo de software y la ciencia de la computación.
+
+Las estructuras de datos, como su nombre indica, nos ayudan a estructurar los datos para que puedan manipularse de manera más eficiente según el caso de uso, lo que genera una abstracción muy útil.
+
+Este será el primer artículo de una serie de artículos que planeo publicar sobre este tema, explicando en detalle el funcionamiento de cada algoritmo y estructura de datos, con ejemplos en JavaScript y gráficos que facilitan la comprensión de su funcionamiento, así como sus casos de uso en el desarrollo de software en la vida cotidiana.
+
+## ¿Cómo funciona una pila?
+
+Piensa en la organización de libros en una pila, colocas cada libro sobre el otro, apilando estos libros, y el primer libro que colocaste quedó en el fondo de la pila, es decir, debajo de todos los demás libros. Ahora, para deshacer esta pila, intuitivamente piensas en sacar primero los libros que están en la parte superior de la pila hasta que no quede ninguno.
+
+Este también es el funcionamiento de la estructura de datos Pila (o "Stack"), esta estructura utiliza el principio LIFO (last-in first-out), donde el último elemento que se inserta es el primero en ser retirado. De esta manera, una pila permite el acceso a un elemento a la vez, y siempre es el último en ser insertado en la pila, es decir, el elemento que está en la parte superior de la pila.
+
+Puede que te estés preguntando: ¿cuál es la utilidad de esto? Por ejemplo, cuando estás escribiendo un texto o usando un programa que tiene una opción de deshacer, tus modificaciones se están guardando en una estructura de pila, lo que te permite deshacer y rehacer acciones.
+
+Las funciones recursivas en los compiladores también utilizan pilas, Node.js y su bucle de eventos también hacen un uso extensivo de las pilas para controlar lo que debe ejecutarse. También podemos mencionar la navegación en páginas web, donde podemos retroceder o avanzar en una página, porque esta información se guarda en una pila.
+
+## Implementando una pila en JavaScript
+
+Ahora que entendemos el funcionamiento de una pila y algunos de sus usos, analicemos cómo creamos esta estructura de datos, utilizando JavaScript en estos ejemplos.
+
+Podemos empezar creando una clase que se llamará `Stack` y inicializando las variables privadas `count` y `items`.
+
+```jsx
+class Stack {
+	#count;
+	#items;
+}
+```
+
+La variable `count` se utilizará para controlar la cantidad de elementos en nuestra pila y la variable `items` almacenará los elementos que se insertarán en la pila.
+
+Luego inicializaremos los valores de estas dos variables en el constructor de la clase como se muestra a continuación:
+
+```jsx
+class Stack {
+	#count;
+	#items;
+	
+	constructor() {
+		this.#count = 0;
+		this.#items = {};
+	}
+}
+```
+
+En este ejemplo estaremos usando un objeto para almacenar nuestros ítems o elementos de la pila, pero también se puede usar un array.
+
+Ahora vamos a crear el método que inserta el elemento en nuestra pila, que llamaremos `push`.
+
+```jsx
+class Stack {
+	#count;
+	#items;
+	
+	constructor() {
+		this.#count = 0;
+		this.#items = {};
+	}
+	push(element) {
+    this.#items[this.#count] = element;
+    this.#count++;
+  }
+}
+```
+
+Lo que estamos haciendo es asignar el elemento que queremos insertar en la pila en la posición almacenada en nuestro contador y luego incrementarlo en `1`. Si nuestra pila está vacía, esta será la posición `0`.
+
+Luego crearemos la función que elimina un elemento de la cima de la pila, la llamaremos `pop`, como se muestra a continuación:
+
+```jsx
+class Stack {
+	// ... código anterior
+	pop() {
+    if (this.isEmpty()) {
+       return undefined;
+     }
+
+     const result = this.#items[--this.#count];
+     delete this.#items[this.#count];
+     return result;
+  }
+}
+```
+
+No te preocupes por el método `isEmpty` en este momento, lo construiremos pronto. Lo que hace este método es verificar si nuestra pila está vacía, y si es cierto, retornaremos `undefined`, porque no queremos intentar retirar un elemento de una pila vacía, lo que causaría un error. Luego, almacenamos el elemento que estamos eliminando en la variable `result` al mismo tiempo que decrementamos el valor de `count`. Luego, usamos el comando `delete` para eliminar el elemento en la pila y devolvemos el resultado.
+
+También necesitamos una forma de saber cuál es el elemento en la parte superior de la pila sin necesidad de eliminarlo. Por eso crearemos el método que llamaremos `peek`, como se muestra a continuación:
+
+```jsx
+class Stack {
+	// ... código anterior
+	peek() {
+    if (this.isEmpty()){
+      return undefined;
+    }
+
+    return this.#items[this.#count - 1];
+  }
+}
+```
+
+Nuevamente verificaremos si la pila está vacía, ya que no queremos verificar el último elemento en una pila vacía. Por lo tanto, devolveremos el último elemento que está en la posición contador - 1. Esto se debe a que sabemos que estamos contando desde la posición `0`, por lo que el valor actual de nuestro contador apunta a la posición del próximo elemento a insertar en la pila.
+
+Finalmente, crearemos nuestro método `isEmpty` que verificará si la pila está vacía. El código para esto es muy simple: verificaremos si el valor de nuestro contador es igual a `0`, porque sabemos que si hay un elemento en nuestra pila, nuestra variable tendrá un valor de `1` o mayor, dependiendo de la cantidad de elementos en nuestra pila.
+
+```jsx
+class Stack {
+	// ... código anterior
+	isEmpty() {
+    return this.#count === 0;
+  }
+}
+```
+
+También necesitamos saber la cantidad de elementos que tenemos actualmente en la pila. Crearemos el método `size` para eso.
+
+```jsx
+class Stack {
+	// ... código anterior
+	size() {
+    return this.#count;
+  }
+}
+```
+
+Simplemente devolveremos el valor de nuestro contador, que siempre corresponderá a la cantidad de elementos en nuestra pila debido a la lógica que estamos utilizando.
+
+También debemos crear un método para vaciar nuestra pila, para ello crearemos el método `clear`, como se muestra a continuación:
+
+```jsx
+class Stack {
+	// ... código anterior
+	clear() {
+    this.#items = {};
+    this.#count = 0;
+  }
+}
+```
+
+Lo que hacemos aquí es simplemente establecer los atributos con los mismos valores con los que comenzamos en nuestro constructor, es decir, a cero. También podríamos haber creado un bucle que utilizara nuestro método `pop` hasta que no hubiera elementos en nuestra pila, pero elegí este enfoque más sencillo.
+
+También sería muy útil tener una función que devolviera una cadena con todos los valores almacenados en nuestra pila, para ello crearemos el método `toString` de la siguiente manera:
+
+```jsx
+class Stack {
+	// ... código anterior
+	toString() {
+    if(this.isEmpty()){
+       return "";
+     }
+
+     let objString = `${this.#items[0]}`;
+     for (let i = 1; i < this.#count; i++) {
+            objString = `${objString},${this.#items[i]}`
+     }
+
+     return objString;
+  }
+}
+```
+
+Lo que estamos haciendo aquí es primero verificar si la pila está vacía. Luego, inicializamos una variable de soporte llamada `objString`, que comenzará con el valor correspondiente a la primera posición de nuestra pila. Después, iniciamos un bucle en la posición 1, que se refiere a la segunda posición de nuestra pila, y luego concatenamos en cada iteración el valor actual en `objString` con la siguiente posición de nuestra pila hasta que no haya más elementos para concatenar en la cadena. Finalmente, devolveremos esta cadena.
+
+## Código final
+
+Hemos completado la implementación de nuestra pila ("stack"). A continuación, puedes ver el resultado final:
+
+```jsx
+class Stack {
+    #count;
+    #items;
+    
+    constructor() {
+        this.#count = 0;
+        this.#items = {};
+    }
+
+    push(element) {
+        this.#items[this.#count] = element;
+        this.#count++;
+    }
+
+    pop() {
+        if (this.isEmpty()) {
+            return undefined;
+        }
+
+        const result = this.#items[--this.#count];
+        delete this.#items[this.#count];
+        return result;
+    }
+
+    peek() {
+        if (this.isEmpty()){
+            return undefined;
+        }
+
+        return this.#items[this.#count - 1];
+    }
+
+    isEmpty() {
+        return this.#count === 0;
+    }
+
+    size() {
+        return this.#count;
+    }
+
+    clear() {
+        this.#items = {};
+        this.#count = 0;
+    }
+
+    toString() {
+        if(this.isEmpty()){
+            return "";
+        }
+
+        let objString = `${this.#items[0]}`;
+        for (let i = 1; i < this.#count; i++) {
+            objString = `${objString},${this.#items[i]}`
+        }
+
+        return objString;
+    }
+}
+```
+
+Para que puedas comprender mejor el funcionamiento de esta estructura de datos, analiza la siguiente imagen:
+
+<Image 
+  src="/articles/algoritmos-e-estrutura-de-dados-pilhas/img1.png"
+  alt="Image que muestra las operaciones con la estructura de datos pila"
+  width="650"
+  height="300"
+  sizes="100vw"
+/>
+
+> Ejemplo del funcionamiento de la pila, por el profesor Ricardo Farias - UFRJ
+> 
+
+En código, este ejemplo de uso se vería de la siguiente manera:
+
+```jsx
+const stack = new Stack();
+stack.push(10);
+stack.push(5);
+stack.push(15);
+stack.pop();
+console.log(stack.toString());
+```
+
+Y el resultado:
+
+```jsx
+10,5
+```
+
+<Image 
+  src="/articles/algoritmos-e-estrutura-de-dados-pilhas/img2.gif"
+  alt="Gif animado como ejemplo de la estructura de datos pila"
+  width="640"
+  height="400"
+  sizes="100vw"
+/>
+
+> Imagen por [Youssef Sawiris](https://medium.com/@youssef.sawiris/stack-45051b2a4104)
+> 
+
+## Ejemplo práctico de uso
+
+Ahora veremos uno de los muchos ejemplos prácticos de uso de pilas. En este caso, construiremos un algoritmo que convierte un número decimal a otra base.
+
+```jsx
+function baseConverter(decNumber, base) {
+    const remStack = new Stack();
+    const digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let number = decNumber;
+    let rem;
+    let baseString = "";
+    
+    if(!(base >= 2 && base <= 36)) return "";
+    while (number > 0) {
+        rem = Math.floor(number % base);
+        remStack.push(rem);
+        number = Math.floor(number / base);
+    }
+    while(!remStack.isEmpty()) {
+        baseString += digits[remStack.pop()];
+    }
+
+    return baseString;
+}
+```
+
+En este algoritmo, declaramos una función que recibe como parámetros el número a convertir y la base a la cual debe convertirse. En la función, iniciamos nuestra `stack` y declaramos los dígitos posibles en las bases decimales que admitiremos, que van desde la base 2 hasta la 36.
+
+Inicializamos la variable `number`, que contendrá el valor que queremos convertir, la variable `rem`, que se utilizará para almacenar el resto temporal de la división, y `baseString`, que contendrá el resultado final de nuestro algoritmo.
+
+Verificamos si la base a la que queremos convertir está dentro de los valores válidos mencionados anteriormente. Si no lo está, simplemente retornamos una cadena vacía.
+
+Luego, entramos en un primer bucle mientras el valor de `number` sea mayor que `0`. El algoritmo calcula el resto de la división de `number` por la `base` y apila ese resto en la `stack`. Luego, actualizamos el valor de `number` con el cociente de la división.
+
+En el segundo bucle, mientras la pila no esté vacía, desapilamos los valores y los utilizamos para construir la cadena del número en la base objetivo. Finalmente, retornamos el resultado final como `baseString`.
+
+```jsx
+baseConverter(15, 2)
+```
+
+Resultado:
+
+```jsx
+1111 // Número binario
+```
+
+## Conclusión
+
+La estructura de datos de pila se puede utilizar en muchas situaciones además de la que hemos visto hoy, como en: análisis de expresiones matemáticas, algoritmos de retroceso (backtracking), como búsqueda en laberintos o resolución de rompecabezas, historial de navegación en navegadores web, llamadas de funciones en lenguajes de programación. ¿Has oído hablar de Stack Overflow? No me refiero al famoso foro de programación, sino al problema de desbordamiento de pila.
+
+En resumen, hay muchas aplicaciones y es muy importante estudiar esta disciplina. En los próximos artículos, estaré presentando nuevos algoritmos y estructuras de datos con un enfoque detallado.
+
+Espero que hayas disfrutado. Hasta la próxima.
+
+Para una visión general sobre estructura de datos recomiendo la lectura de este articulo de Alura Latam:  **[Estructura de datos: introducción](https://www.aluracursos.com/blog/estructura-de-datos-introduccion)**
+
+---
+
+### Referencias:
+
+[Introduction to Algorithms - Thomas Cormen](https://www.amazon.com/Introduction-Algorithms-fourth-Thomas-Cormen-ebook/dp/B094WZNKP2/)
+
+[Algoritmos y Estructura de Datos: Pila - Universidad de Valencia](https://informatica.uv.es/iiguia/AED/oldwww/2002_03/Teoria/AED.Tema.11.pdf)
+
+[Stack in Python by Youssef Sawiris](https://medium.com/@youssef.sawiris/stack-45051b2a4104)
