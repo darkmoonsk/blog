@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: any) {
       description: blog.description + " " + siteMetaData.siteUrl,
       url: siteMetaData.siteUrl + `/${locale}` +  "/blogs/" + params.slug,
       siteName: siteMetaData.title,
-      locale: 'pt_BR',
+      locale: locale,
       type: 'article',
       publishedTime: publishedAt,
       modifiedTime: modifiedAt,
@@ -118,7 +118,7 @@ export default function BlogPage({ params }: any) {
             sizes="100vw"
           />
         </div>
-        <BlogDetails blog={blog} slug={params.slug} />
+        <BlogDetails blog={blog} slug={params.slug} locale={locale} />
         <div className="grid grid-cols-12 gap-y-8 lg:gap-8 sxl:gap-16 mt-8 px-5 md:px-10">
           <div className="col-span-12 sxl:col-span-4">
             <details className="border-[1px] border-solid border-dark dark:border-light text-dark dark:text-light rounded-lg p-4 sticky top-6
