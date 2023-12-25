@@ -1,0 +1,31 @@
+export const skillListPTBR = [
+  "React",
+  "Node.js",
+  "Next.js",
+  "JavaScript",
+  "TypeScript",
+  "Python",
+  "Java",
+  "IA Generativa",
+  "Web Design",
+  "Firebase",
+  "TailwindCSS",
+  "Styled Components",
+  "Animação Web",
+];
+
+export const skillListES = [
+  "React",
+  "Node.js",
+  "Next.js",
+  "JavaScript",
+  "TypeScript",
+  "Python",
+  "Java",
+  "IA Generativa",
+  "Diseño Web",
+  "Firebase",
+  "TailwindCSS",
+  "Styled Components",
+  "Animación Web",
+];

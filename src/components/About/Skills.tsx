@@ -1,38 +1,9 @@
 import { translations } from "@/utils";
 import { useLocale } from "next-intl";
+import { skillListPTBR } from "@/constants/skills";
+import { skillListES } from "@/constants/skills";
 
-function Skills() {
-  const skillListPTBR = [
-    "React",
-    "Node.js",
-    "Next.js",
-    "JavaScript",
-    "TypeScript",
-    "Python",
-    "Java",
-    "IA Generativa",
-    "Web Design",
-    "Firebase",
-    "TailwindCSS",
-    "Styled Components",
-    "Animação Web",
-  ];
-  const skillListES = [
-    "React",
-    "Node.js",
-    "Next.js",
-    "JavaScript",
-    "TypeScript",
-    "Python",
-    "Java",
-    "IA Generativa",
-    "Diseño Web",
-    "Firebase",
-    "TailwindCSS",
-    "Styled Components",
-    "Animación Web",
-  ];
-  
+function Skills() { 
   const locale = useLocale();
   const t = translations(locale).About;
 
