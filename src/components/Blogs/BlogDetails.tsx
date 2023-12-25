@@ -4,11 +4,17 @@ import es from "date-fns/locale/es";
 import Link from "next/link";
 import { slug } from "github-slugger";
 import ViewCounter from "./ViewCounter";
-import { getLocale } from "next-intl/server";
 import { translations } from "@/utils";
+import Blog from "@/app/models/blog";
 
-async function BlogDetails({ blog, slug: blogSlug }: any) {
-  const locale = await getLocale();
+
+interface BlogDetailsProps {
+  blog: Blog,
+  slug: string
+  locale: string
+}
+
+function BlogDetails({ blog, slug: blogSlug, locale }: BlogDetailsProps) {
   const dateLocale = locale === "pt-br" ? ptBR : es;
   const t = translations(locale).BlogDetails;
 
@@ -25,8 +31,8 @@ async function BlogDetails({ blog, slug: blogSlug }: any) {
       <div>
         {blog.readingTime.text.replace("read", t.read)}
       </div>
-      <Link href={`/${locale}/categories/${slug(blog.tags[0])}`} className="m-3">
-        #{slug(blog.tags[0])}
+      <Link href={`/${locale}/categories/${blog.tags ? slug(blog.tags[0]) : ""}`} className="m-3">
+        #{slug(blog.tags ? slug(blog.tags[0]) : "")}
       </Link>
     </div>
   )
