@@ -2,7 +2,6 @@ import { Link } from "@/navigation"
 import { useThemeSwitch } from "../Hooks/useThemeSwitch"
 import { cx, translations } from "@/utils";
 import dynamic from 'next/dynamic';
-import { getLocale } from "next-intl/server";
 import { useLocale } from "next-intl";
 
 const SunIcon = dynamic(() => import('@/components/Icons/SunIcon'), {
@@ -16,7 +15,7 @@ interface MenuProps {
   isActive?: boolean
 }
 
-async function Menu({ isActive } : MenuProps ) {
+function Menu({ isActive = false } : MenuProps ) {
   const [mode, setMode] = useThemeSwitch();
   const menuHidden = isActive ? "flex" : "hidden"
   const locale = useLocale();
