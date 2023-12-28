@@ -10,7 +10,7 @@ function FeaturedPosts({blogs}: any) {
 
 
   return (
-    <section className="w-full mt-16 sm:mt-24 md:mt-32 px-5 sm:px-10 md:px-24 sxl:px-32 flex flex-col item-center justify-center">
+    <section className="w-full mt-12 sm:mt-14 md:mt-16 px-5 sm:px-10 md:px-24 sxl:px-32 flex flex-col item-center justify-center">
       <h2 className="w-full inline-block font-bold capitalize text-2xl md:text-4xl text-dark dark:text-light">
         {t.FeaturedPosts.title}
       </h2>
