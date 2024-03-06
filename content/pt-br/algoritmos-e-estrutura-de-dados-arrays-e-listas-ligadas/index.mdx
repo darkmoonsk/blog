@@ -1,0 +1,471 @@
+---
+title: "Algoritmos e Estrutura de dados: Arrays e Listas Ligadas"
+lang: "pt-br"
+description: "Este artigo explora Arrays e Listas Ligadas, destacando suas características, como alocação de memória e eficiência em operações como inserção e remoção, avançando na compreensão destas estruturas de dados."
+image: "../../../public/blogs/algoritmos-e-estrutura-de-dados-arrays-e-listas-ligadas.jpg"
+publishedAt: "2024-03-06"
+updatedAt: "2024-03-06"
+author: "Bruno Souza"
+isPublished: true
+tags: 
+- algoritmos e estrutura de dados
+---
+
+Hoje depois de uma pausa desde do ultimo artigo da série vamos falar finalmente da estrutura de dados mais básica presente em praticamente todas as linguagens de programação, que é o Array (Ou Lista). Não foi por acaso que deixei para falar dele só agora. E também falaremos sobre Listas Ligadas.
+
+## Arrays estáticos
+
+Em muitas das linguagens de programação o array é uma estrutura que deve ser instanciada com um tamanho fixo (O que não é o caso em JavaScript, ou Python), ou seja, se você quiser aumentar o tamanho dele, você precisa alocar um novo array e copiar o array antigo para o novo, e é assim que funciona em C por exemplo. 
+
+Além disso, o array é uma estrutura contigua, ou seja, os elementos ou itens do array são armazenados em memória um em seguida do outro. Isso quer dizer que, quando se vai alocar um array o que acontece por baixo dos panos é que será buscado um espaço que comporte sequencialmente os bits de informação de cada item do array, a quantidade de bits depende do tipo de elementos que o array armazenará.
+
+<Image 
+  src="/articles/algoritmos-e-estrutura-de-dados-arrays-e-listas-ligadas/array.png"
+  alt="Exemplo de um array em memória"
+  width="300"
+  height="180"
+  sizes="100vw"
+/>
+
+Esse tipo de array é conhecido como array estático, devido a característica de ser fixo, eles geralmente são mais rápidos devido a alocação na pilha da memória e ao acesso direto aos elementos, já que seu tamanho já é estabelecido em tempo de execução, são uteis quando a quantidade de elementos é conhecido antecipadamente e não muda. Porem são menos flexíveis.
+
+> Pilha (Stack) é uma região da memória com gerenciamento eficiente, mas limitada em tamanho.
+> 
+
+## Arrays dinâmicos
+
+Em linguagens como JavaScript e Python os arrays são dinâmicos, isso significa que eles podem mudar de tamanho em tempo de execução, e ajustam automaticamente o seu tamanho durante as operações de adicionar e remover elementos. 
+
+São bastante uteis quando o número de elementos pode variar ou não é conhecido antecipadamente, são mais flexíveis permitindo inserção e remoção de elementos em qualquer parte da lista. Geralmente são alocados no heap e tendem a ter um desempenho um pouco mais lento devido as operações adicionais necessárias para redimensionar o array.
+
+> Heap é uma região da memória mais flexível e com mais espaço, mas com um gerenciamento de memória menos eficiente e mais lento.
+> 
+
+Se deseja aprender mais afundo sobre arrays em JavaScript recomendo esta leitura: https://javascript.info/array
+
+Até aqui já vimos que o array armazena os dados de forma contigua na memória e caso o array cresça ele precisa ser realocado para uma nova posição onde ele caiba por completo, sequencialmente. E vimos que essas operações custam tempo e desempenho. Como poderíamos quebrar essa dependência de alocar o conteúdo literalmente de forma sequencial na memoria física mas ainda assim mantendo o aspecto sequencial no seu uso?
+
+## Listas ligadas
+
+A lista ligada assim como um array são estruturas de dados sequencial, mas que tem uma diferença importante, os itens não necessariamente estão alocados de forma sequencial. Diferente de um array, cada item em uma lista ligada está conectado ao próximo através de uma referencia ao próximo elemento da lista, como pode ser visto na imagem abaixo:
+
+<Image 
+  src="/articles/algoritmos-e-estrutura-de-dados-arrays-e-listas-ligadas/linked-list.png"
+  alt="Exemplo do funcionamento de uma lista ligada"
+  width="300"
+  height="180"
+  sizes="100vw"
+/>
+
+## Implementando a Lista Ligada
+
+A estrutura de dados da lista ligada oferece flexibilidade em adicionar e remover elementos sem a necessidade de realocação de memória. Vamos explorar cada método do código da lista ligada apresentado.
+
+## Classe Node
+
+```jsx
+class Node {
+    constructor(element) {
+        this.element = element;
+        this.next = undefined;
+    };
+}
+
+```
+
+Cada `Node` contém o valor do elemento (`element`) e uma referência ao próximo nó (`next`), permitindo a conexão entre elementos na lista.
+
+### Função de Igualdade Padrão
+
+```jsx
+export function defaultEquals(a, b) {
+    return a === b;
+}
+
+```
+
+A função `defaultEquals` é utilizada para comparar elementos na lista, assegurando que tanto o valor quanto o tipo sejam iguais.
+
+## Classe LinkedList
+
+### Construtor
+
+```jsx
+constructor(equalsFn = defaultEquals) {
+    this.count = 0;
+    this.head = null;
+    this.#equalsFn = equalsFn;
+}
+
+```
+
+O construtor da classe `LinkedList` inicializa a lista com a cabeça (`head`) nula, uma contagem (`count`) de elementos iniciando em zero e define a função de igualdade (`#equalsFn`), que é usada para comparar os elementos da lista.
+
+### Método push
+
+```jsx
+push(element) {
+    const node = new Node(element);
+    let current;
+    if (this.head == null) {
+        this.head = node;
+    } else {
+        current = this.head;
+        while (current.next != null) {
+            current = current.next;
+        }
+        current.next = node;
+    }
+    this.count++;
+}
+
+```
+
+O método `push` adiciona um novo elemento ao final da lista, incrementando a contagem de elementos (`count`).
+
+### Método removeAt
+
+```jsx
+removeAt(index) {
+		// Verifica se o indice não é maior e nem menor que o tamanho da lista
+    if (index >= 0 && index < this.count) {
+        let current = this.head;
+        if (index === 0) {
+            this.head = current.next;
+        } else {
+            const previous = this.getElementAt(index - 1);
+						// Remove a referencia ao nó para que seja apagado pelo sistema
+            current = previous.next;
+            previous.next = current.next;
+        }
+        this.count--;
+        return current.element;
+    }
+    return undefined;
+}
+```
+
+`removeAt` remove um elemento de um índice específico, ajustando as referências `next` para excluir o nó da lista e decrementando `count`.
+
+### Método getElementAt
+
+```jsx
+getElementAt(index) {
+		// Verifica se o indice não é maior e nem menor que o tamanho da lista
+    if (index >= 0 && index <= this.count) {
+				// Começa a busca apartir do head
+        let node = this.head;
+				// Itera até encontrar o nó no indice especificado ou até a referencia ser null
+        for (let i = 0; i < index && node != null; i++) {
+            node = node.next;
+        }
+        return node;
+    }
+    return undefined;
+}
+```
+
+Este método retorna o nó de um índice específico, navegando pela lista a partir da cabeça e seguindo as referências `next`.
+
+### Método insert
+
+```jsx
+insert(element, index) {
+		// Verifica se o indice não é maior e nem menor que o tamanho da lista
+    if (index >= 0 && index <= this.count) { 
+        const node = new Node(element);
+				// Se o index for zero, "empurra" o primeiro elemento e insere o novo no lugar
+        if (index === 0) {
+            const current = this.head;
+            node.next = current;
+            this.head = node;
+        } else {
+						// Se não busca o elemento anterior ao index que se deseja inserir
+            const previous = this.getElementAt(index - 1);
+						// Guarda a referencia ao elemento atual no index indicado
+            const current = previous.next;
+						// Adiciona o elemento atual no index indicado ao next do novo nó
+            node.next = current;
+						// Adiciona a referencia ao novo nó ao nó anterior
+            previous.next = node;
+        }
+        this.count++;
+        return true;
+    }
+    return false;
+}
+```
+
+`insert` adiciona um elemento em um índice específico, atualizando as referências `next` para manter a sequência da lista.
+
+### Método indexOf
+
+```jsx
+indexOf(element) {
+    let current = this.head;
+    for (let i = 0; i < this.count && current != null; i++) {
+				// Verifica se o elemento atual é igual ao elemento do qual se busca o indice
+        if (this.#equalsFn(element, current.element)) {
+            return i;
+        }
+        current = current.next;
+    }
+    return -1;
+}
+```
+
+O método `indexOf` localiza o índice do primeiro nó que contém o elemento especificado, percorrendo a lista e utilizando a função `#equalsFn` para comparação.
+
+### Método remove
+
+```jsx
+remove(element) {
+    const index = this.indexOf(element);
+    return this.removeAt(index);
+}
+
+```
+
+`remove` utiliza `indexOf` para encontrar o índice do elemento desejado e `removeAt` para remover o nó com esse índice.
+
+### Métodos Auxiliares
+
+```jsx
+size() {
+    return this.count;
+}
+
+isEmpty() {
+    return this.size() === 0;
+}
+
+clear() {
+    this.head = null;
+    this.count = 0;
+}
+
+getHead() {
+    return this.head;
+}
+
+toString() {
+    if (this.head == null) {
+        return '';
+    }
+    let objString = `${this.head.element}`;
+    let current = this.head.next;
+    for (let i = 1; i < this.size() && current != null; i++) {
+        objString = `${objString},${current.element}`;
+        current = current.next;
+    }
+    return objString;
+}
+
+```
+
+Estes métodos fornecem funcionalidades adicionais para a lista ligada, como determinar o tamanho (`size`), verificar se está vazia (`isEmpty`), limpar (`clear`), obter a primeira posição ou a cabeça da lista (`getHead`) e representar a lista como uma string (`toString`).
+
+## Revisão do fizemos até aqui
+
+Vimos que uma lista ligada é uma estrutura de dados linear composta por uma sequência de nós, onde cada nó contém um dado e uma referência (ou ponteiro) para o próximo nó na sequência. Também, entendemos que esta estrutura permite uma série de operações eficientes, como inserção, remoção e busca de elementos. 
+
+Agora, vamos revisar o funcionamento geral da lista ligada que programamos até aqui.
+
+### Nó da Lista Ligada
+
+Cada nó (`Node`) na lista ligada contém dois componentes principais:
+
+- `element`: O valor ou dado armazenado no nó.
+- `next`: Um ponteiro (ou referência) para o próximo nó na lista ligada. Se o nó for o último da lista, este ponteiro pode ser `null` ou `undefined`, indicando o final da lista.
+
+### Estrutura da Lista Ligada
+
+A lista ligada em si (`LinkedList`) é definida por:
+
+- `head`: Uma referência para o primeiro nó da lista. Se a lista estiver vazia, `head` será `null` ou `undefined`.
+- `count`: Um contador que mantém o registro do número de nós na lista. Isso facilita a verificação do tamanho da lista e a validação dos índices utilizados em várias operações.
+- `#equalsFn`: Uma função de comparação que determina se dois elementos são iguais. Isso é útil para implementar operações como `indexOf` e `remove`, que necessitam comparar elementos.
+
+### Operações Principais
+
+### Adicionar Elementos
+
+- `push(element)`: Adiciona um novo elemento ao final da lista. Se a lista estiver vazia, o novo elemento se torna a cabeça (`head`). Caso contrário, o método percorre a lista até o último nó e insere o novo elemento após ele.
+- `insert(element, index)`: Insere um novo elemento em um índice específico, ajustando os ponteiros `next` conforme necessário para manter a ordem dos nós.
+
+### Remover Elementos
+
+- `removeAt(index)`: Remove o elemento de um índice específico. Se o índice for `0`, a cabeça (`head`) é atualizada para o segundo nó. Para outros índices, o método encontra o nó anterior ao nó que deve ser removido e ajusta o ponteiro `next` para excluir o nó alvo da lista.
+- `remove(element)`: Encontra e remove o elemento especificado da lista, utilizando `indexOf` para determinar seu índice e `removeAt` para removê-lo.
+
+### Buscar Elementos
+
+- `getElementAt(index)`: Retorna o nó localizado no índice especificado, percorrendo a lista desde a cabeça até alcançar o nó desejado.
+- `indexOf(element)`: Retorna o índice do primeiro nó que contém o elemento especificado, percorrendo a lista e utilizando a função `#equalsFn` para comparar os elementos.
+
+### Outras Operações
+
+- `size()`: Retorna o número de elementos na lista.
+- `isEmpty()`: Verifica se a lista está vazia.
+- `clear()`: Remove todos os elementos da lista, redefinindo `head` para `null` e `count` para `0`.
+- `getHead()`: Retorna o primeiro nó da lista.
+- `toString()`: Cria uma representação em string da lista, percorrendo todos os nós e concatenando seus elementos.
+
+Cada nó da lista ligada é independentemente alocado na memória, e os nós são "ligados" através dos ponteiros `next`. Esta estrutura permite inserções e remoções eficientes, pois não requer realocação ou reorganização de todos os elementos, ao contrário dos arrays. No entanto, acessar elementos em uma lista ligada pode ser menos eficiente, pois pode requerer um percurso desde a cabeça da lista até o elemento desejado.
+
+Ao comparar arrays e listas ligadas, é essencial entender as diferenças fundamentais em seu funcionamento, bem como suas vantagens e desvantagens em diferentes cenários de uso.
+
+### Código final:
+
+```jsx
+import { Node } from "./models/node.js";
+import { defaultEquals } from "./utils/util.js";
+
+export default class LinkedList {
+    count;
+    head;
+    #equalsFn;
+    constructor(equalsFn = defaultEquals) {
+        this.count = 0;
+        this.head = null;
+        this.#equalsFn = equalsFn;
+    }
+
+    push(element) {
+        const node = new Node(element);
+        let current;
+
+        if(this.head == null) {
+            this.head = node;
+        } else {
+            current = this.head;
+            while(current.next != null) {
+                current = current.next;
+            }
+            current.next = node;
+        }
+        this.count++;
+    }
+
+    removeAt(index) {
+        if(index >= 0 && index < this.count) {
+            let current = this.head;
+            if(index === 0) {
+                this.head = current.next;
+            } else {
+                const previous = this.getElementAt(index - 1);
+                current = previous.next;
+                previous.next = current.next;
+            }
+            this.count--;
+            return current.element;
+        } 
+        
+        return undefined;
+    }
+
+    getElementAt(index) {
+        if(index >= 0 && index <= this.count) {
+            let node = this.head;
+            for(let i = 0; i < index && node != null; i++) {
+                node = node.next;
+            }
+            return node;
+        }
+
+        return undefined;
+    }
+
+    insert(element, index) {
+        if(index >= 0 && index <= this.count) {
+            const node = new Node(element);
+
+            if(index === 0) {
+                const current = this.head;
+                node.next = current;
+                this.head = node;
+            } else {
+                const previous = this.getElementAt(index - 1);
+                const current = previous.next;
+                node.next = current;
+                previous.next = node;
+            }
+
+            this.count++
+            return true;
+        }
+
+        return false;
+    }
+
+    indexOf(element) {
+        let current = this.head;
+        
+        for(let i = 0; i < this.count && current != null; i++) {
+            if(this.#equalsFn(element, current.element)) {
+                return i;
+            }
+            current = current.next;
+        }
+
+        return -1;
+    }
+
+    remove(element) {
+        const index = this.indexOf(element);
+        return this.removeAt(index);
+    }
+
+    size() {
+        return this.count;
+    }
+
+    isEmpty() {
+        return this.size() === 0;
+    }
+
+    clear() {
+        this.count = 0;
+        this.head = null;
+    }
+
+    getHead() {
+        return this.head;
+    }
+
+    toString() {
+        if(this.head == null) {
+            return "";
+        }
+
+        let objString = `${this.head.element}`
+        let current = this.head.next;
+        for (let i = 0; i < this.size() && current != null; i++) {
+            objString = `${objString},${current.element}`;
+            current = current.next;
+        }
+
+        return objString;
+    }
+}
+
+```
+
+## Conclusão
+
+### Arrays
+
+Arrays ou listas são coleções de elementos armazenados contiguamente na memória, o que facilita o acesso rápido aos elementos através de índices. Esta característica torna os arrays particularmente eficientes para operações de leitura e acesso direto a elementos. Arrays estáticos, com tamanho fixo, são alocados na pilha, proporcionando um desempenho de alta velocidade. Arrays dinâmicos, por outro lado, oferecem maior flexibilidade ao permitir alterações no tamanho da coleção, mas podem sofrer com realocações de memória e cópias de elementos, que podem impactar o desempenho.
+
+### Listas Ligadas
+
+Listas ligadas consistem em nós que armazenam elementos e referências (ou ponteiros). No entanto, o acesso aos elementos em uma lista ligada é sequencial, começando pela cabeça da lista, o que pode resultar em tempos de acesso mais lentos comparados aos arrays.
+
+### Qual é o melhor a se usar?
+
+A escolha entre usar um array ou uma lista ligada depende das operações que você espera realizar com mais frequência:
+
+- **Arrays** são mais adequados para situações em que o acesso rápido a elementos arbitrários é uma prioridade, e o tamanho da coleção é conhecido antecipadamente ou muda infrequentemente.
+- **Listas Ligadas** são ideais para aplicações que exigem inserções e remoções frequentes de elementos, especialmente quando o desempenho dessas operações supera a necessidade de acesso direto a elementos.
+
+Entender as características e limitações de cada uma dessas estruturas de dados é crucial para escolher a mais adequada para suas necessidades, otimizando assim o desempenho e a eficiência da sua aplicação. Em última análise, a decisão entre arrays e listas ligadas deve ser baseada nas demandas do seu projeto e nos padrões de acesso e modificação de dados que você planeja, a quantidade de dados a ser manipulado é um consideração importante tanto na escolha de uma estrutura de dados quanto na escolha de um algoritmo.
