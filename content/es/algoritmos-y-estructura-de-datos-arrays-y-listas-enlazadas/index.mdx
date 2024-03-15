@@ -1,0 +1,465 @@
+---
+title: "Algoritmos y Estructuras de Datos: Arrays y Listas Enlazadas"
+lang: "es"
+description: "Este artículo explora Arrays y Listas Enlazadas, destacando sus características, como asignación de memoria y eficiencia en operaciones como inserción y eliminación, avanzando en la comprensión de estas estructuras de datos."
+image: "../../../public/blogs/algoritmos-e-estrutura-de-dados-arrays-e-listas-ligadas.jpg"
+publishedAt: "2024-03-15"
+updatedAt: "2024-03-15"
+author: "Bruno Souza"
+isPublished: true
+tags: 
+- algoritmos y estructura de datos
+---
+
+Hoy, después de un descanso desde el último artículo de la serie, finalmente hablaremos sobre la estructura de datos más básica presente en prácticamente todos los lenguajes de programación, que es el Array (o Lista). No fue casualidad que esperé para hablar de él hasta ahora. También hablaremos sobre Listas Enlazadas.
+
+## Arrays estáticos
+
+En muchos lenguajes de programación, el array es una estructura que debe ser instanciada con un tamaño fijo (lo cual no es el caso en JavaScript o Python), es decir, si deseas aumentar su tamaño, necesitas asignar un nuevo array y copiar el antiguo al nuevo, y así es como funciona en C, por ejemplo.
+
+Además, el array es una estructura contigua, es decir, los elementos o ítems del array se almacenan en memoria uno después del otro. Esto significa que, al asignar un array, lo que sucede en el fondo es que se buscará un espacio que pueda contener secuencialmente los bits de información de cada ítem del array, la cantidad de bits depende del tipo de elementos que el array almacenará.
+
+<Image 
+  src="/articles/algoritmos-e-estrutura-de-dados-arrays-e-listas-ligadas/array.png"
+  alt="Ejemplo de un array em memoria"
+  width="700"
+  height="200"
+  sizes="100vw"
+/>
+
+Este tipo de array se conoce como array estático, debido a la característica de ser fijo. Generalmente son más rápidos debido a la asignación en la pila de memoria y al acceso directo a los elementos, puesto que su tamaño ya está establecido en tiempo de ejecución. Son útiles cuando la cantidad de elementos es conocida de antemano y no cambia. Sin embargo, son menos flexibles.
+
+> La pila (Stack) es una región de memoria con un manejo eficiente, pero limitada en tamaño.
+> 
+
+## Arrays dinámicos
+
+En lenguajes como JavaScript y Python, los arrays son dinámicos, lo que significa que pueden cambiar de tamaño en tiempo de ejecución, y ajustan automáticamente su tamaño durante las operaciones de añadir y eliminar elementos.
+
+Son muy útiles cuando el número de elementos puede variar o no se conoce de antemano, son más flexibles permitiendo la inserción y eliminación de elementos en cualquier parte de la lista. Generalmente se asignan en el montículo y tienden a tener un rendimiento un poco más lento debido a las operaciones adicionales necesarias para redimensionar el array.
+
+> El montículo (Heap) es una región de memoria más flexible y con más espacio, pero con un manejo de memoria menos eficiente y más lento.
+> 
+
+Si deseas aprender más sobre arrays en JavaScript, recomiendo esta lectura: [JavaScript Arrays](https://javascript.info/array)
+
+Hasta aquí hemos visto que el array almacena los datos de forma contigua en la memoria y que si el array crece, necesita ser realocado a una nueva posición donde quepa completamente, secuencialmente. Y hemos visto que estas operaciones cuestan tiempo y rendimiento. ¿Cómo podríamos romper esta dependencia de asignar el contenido literalmente de forma secuencial en la memoria física pero aún así manteniendo el aspecto secuencial en su uso?
+
+## Listas enlazadas
+
+La lista enlazada, al igual que un array, es una estructura de datos secuencial, pero con una diferencia importante: los elementos no necesariamente están asignados de forma secuencial. A diferencia de un array, cada elemento en una lista enlazada está conectado al siguiente a través de una referencia al siguiente elemento de la lista, como se puede ver en la imagen a continuación:
+
+<Image 
+  src="/articles/algoritmos-e-estrutura-de-dados-arrays-e-listas-ligadas/linked-list.png"
+  alt="Ejemplo del funcionamento de una lista enlazada"
+  width="1700"
+  height="625"
+  sizes="100vw"
+/>
+
+## Implementando la Lista Enlazada
+
+La estructura de datos de la lista enlazada ofrece flexibilidad para añadir y eliminar elementos sin necesidad de reasignación de memoria. Exploraremos cada método del código de la lista enlazada presentado.
+
+## Clase Node
+
+```jsx
+class Node {
+    constructor(element) {
+        this.element = element;
+        this.next = undefined;
+    };
+}
+
+```
+
+Cada `Node` contiene el valor del elemento (`element`) y una referencia al próximo nodo (`next`), permitiendo la conexión entre elementos en la lista.
+
+### Función de Igualdad por Defecto
+
+```jsx
+export function defaultEquals(a, b) {
+    return a === b;
+}
+
+```
+
+La función `defaultEquals` se utiliza para comparar elementos en la lista, asegurando que tanto el valor como el tipo sean iguales.
+
+## Clase LinkedList
+
+### Constructor
+
+```jsx
+constructor(equalsFn = defaultEquals) {
+    this.count = 0;
+    this.head = null;
+    this.#equalsFn = equalsFn;
+}
+
+```
+
+El constructor de la clase `LinkedList` inicializa la lista con la cabeza (`head`) nula, un contador (`count`) de elementos comenzando en cero y define la función de igualdad (`#equalsFn`), que se utiliza para comparar los elementos de la lista.
+
+### Método push
+
+```jsx
+push(element) {
+    const node = new Node(element);
+    let current;
+    if (this.head == null) {
+        this.head = node;
+    } else {
+        current = this.head;
+        while (current.next != null) {
+            current = current.next;
+        }
+        current.next = node;
+    }
+    this.count++;
+}
+
+```
+
+El método `push` añade un nuevo elemento al final de la lista, incrementando el contador de elementos (`count`).
+
+### Método removeAt
+
+```jsx
+removeAt(index) {
+    if (index >= 0 && index < this.count) {
+        let current = this.head;
+        if (index === 0) {
+            this.head = current.next;
+        } else {
+            const previous = this.getElementAt(index - 1);
+            current = previous.next;
+            previous.next = current.next;
+        }
+        this.count--;
+        return current.element;
+    }
+    return undefined;
+}
+
+```
+
+`removeAt` remueve un elemento de un índice específico, ajustando las referencias `next` para excluir el nodo de la lista y decrementando `count`.
+
+### Método getElementAt
+
+```jsx
+getElementAt(index) {
+    if (index >= 0 && index <= this.count) {
+        let node = this.head;
+        for (let i = 0; i < index && node != null; i++) {
+            node = node.next;
+        }
+        return node;
+    }
+    return undefined;
+}
+
+```
+
+Este método retorna el nodo de un índice específico, navegando por la lista desde la cabeza y siguiendo las referencias `next`.
+
+### Método insert
+
+```jsx
+insert(element, index) {
+    if (index >= 0 && index <= this.count) {
+        const node = new Node(element);
+        if (index === 0) {
+            const current = this.head;
+            node.next = current;
+            this.head = node;
+        } else {
+            const previous = this.getElementAt(index - 1);
+            const current = previous.next;
+            node.next = current;
+            previous.next = node;
+        }
+        this.count++;
+        return true;
+    }
+    return false;
+}
+
+```
+
+`insert` añade un elemento en un índice específico, actualizando las referencias `next` para mantener la secuencia de la lista.
+
+### Método indexOf
+
+```jsx
+indexOf(element) {
+    let current = this.head;
+    for (let i = 0; i < this.count && current != null; i++) {
+        if (this.#equalsFn(element, current.element)) {
+            return i;
+        }
+        current = current.next;
+    }
+    return -1;
+}
+
+```
+
+El método `indexOf` localiza el índice del primer nodo que contiene el elemento especificado, recorriendo la lista y utilizando la función `#equalsFn` para comparar los elementos.
+
+### Método remove
+
+```jsx
+remove(element) {
+    const index = this.indexOf(element);
+    return this.removeAt(index);
+}
+
+```
+
+`remove` utiliza `indexOf` para encontrar el índice del elemento deseado y `removeAt` para remover el nodo con ese índice.
+
+### Métodos Auxiliares
+
+```jsx
+size() {
+    return this.count;
+}
+
+isEmpty() {
+    return this.size() === 0;
+}
+
+clear() {
+    this.head = null;
+    this.count = 0;
+}
+
+getHead() {
+    return this.head;
+}
+
+toString() {
+    if (this.head == null) {
+        return '';
+    }
+    let objString = `${this.head.element}`;
+    let current = this.head.next;
+    for (let i = 1; i < this.size() && current != null; i++) {
+        objString = `${objString},${current.element}`;
+        current = current.next;
+    }
+    return objString;
+}
+
+```
+
+Estos métodos proporcionan funcionalidades adicionales para la lista enlazada, como determinar el tamaño (`size`), verificar si está vacía (`isEmpty`), limpiar (`clear`), obtener la primera posición o la cabeza de la lista (`getHead`) y representar la lista como una cadena (`toString`).
+
+## Revisión de lo que hemos hecho hasta ahora
+
+Hemos visto que una lista enlazada es una estructura de datos lineal compuesta por una secuencia de nodos, donde cada nodo contiene un dato y una referencia (o puntero) al próximo nodo en la secuencia. También entendemos que esta estructura permite una serie de operaciones eficientes, como inserción, eliminación y búsqueda de elementos.
+
+Ahora, vamos a revisar el funcionamiento general de la lista enlazada que hemos programado hasta ahora.
+
+### Nodo de la Lista Enlazada
+
+Cada nodo (`Node`) en la lista enlazada contiene dos componentes principales:
+
+- `element`: El valor o dato almacenado en el nodo.
+- `next`: Un puntero (o referencia) al próximo nodo en la lista enlazada. Si el nodo es el último de la lista, este puntero puede ser `null` o `undefined`, indicando el final de la lista.
+
+### Estructura de la Lista Enlazada
+
+La lista enlazada en sí (`LinkedList`) se define por:
+
+- `head`: Una referencia al primer nodo de la lista. Si la lista está vacía, `head` será `null` o `undefined`.
+- `count`: Un contador que mantiene el registro del número de nodos en la lista. Esto facilita la verificación del tamaño de la lista y la validación de los índices utilizados en varias operaciones.
+- `#equalsFn`: Una función de comparación que determina si dos elementos son iguales. Esto es útil para implementar operaciones como `indexOf` y `remove`, que necesitan comparar elementos.
+
+### Operaciones Principales
+
+### Añadir Elementos
+
+- `push(element)`: Añade un nuevo elemento al final de la lista. Si la lista está vacía, el nuevo elemento se convierte en la cabeza (`head`). De lo contrario, el método recorre la lista hasta el último nodo e inserta el nuevo elemento después de él.
+- `insert(element, index)`: Inserta un nuevo elemento en un índice específico, ajustando los punteros `next` según sea necesario para mantener el orden de los nodos.
+
+### Eliminar Elementos
+
+- `removeAt(index)`: Elimina el elemento de un índice específico. Si el índice es `0`, la cabeza (`head`) se actualiza al segundo nodo. Para otros índices, el método encuentra el nodo anterior al nodo que debe ser eliminado y ajusta el puntero `next` para excluir el nodo objetivo de la lista.
+- `remove(element)`: Encuentra y elimina el elemento especificado de la lista, utilizando `indexOf` para determinar su índice y `removeAt` para eliminarlo.
+
+### Buscar Elementos
+
+- `getElementAt(index)`: Retorna el nodo ubicado en el índice especificado, recorriendo la lista desde la cabeza hasta alcanzar el nodo deseado.
+- `indexOf(element)`: Retorna el índice del primer nodo que contiene el elemento especificado, recorriendo la lista y utilizando la función `#equalsFn` para comparar los elementos.
+
+### Otras Operaciones
+
+- `size()`: Retorna el número de elementos en la lista.
+- `isEmpty()`: Verifica si la lista está vacía.
+- `clear()`: Elimina todos los elementos de la lista, redefiniendo `head` a `null` y `count` a `0`.
+- `getHead()`: Retorna el primer nodo de la lista.
+- `toString()`: Crea una representación en cadena de la lista, recorriendo todos los nodos y concatenando sus elementos.
+
+Cada nodo de la lista enlazada se asigna independientemente en la memoria, y los nodos están "enlazados" a través de los punteros `next`. Esta estructura permite inserciones y eliminaciones eficientes, ya que no requiere reasignación o reorganización de todos los elementos, a diferencia de los arrays. Sin embargo, acceder a elementos en una lista enlazada puede ser menos eficiente, ya que puede requerir un recorrido desde la cabeza de la lista hasta el nodo deseado.
+
+Al comparar arrays y listas enlazadas, es esencial entender las diferencias fundamentales en su funcionamiento, así como sus ventajas y desventajas en diferentes escenarios de uso.
+
+### Código final:
+
+```jsx
+import { Node } from "./models/node.js";
+import { defaultEquals } from "./utils/util.js";
+
+export default class LinkedList {
+    count;
+    head;
+    #equalsFn;
+    constructor(equalsFn = defaultEquals) {
+        this.count = 0;
+        this.head = null;
+        this.#equalsFn = equalsFn;
+    }
+
+    push(element) {
+        const node = new Node(element);
+        let current;
+
+        if(this.head == null) {
+            this.head = node;
+        } else {
+            current = this.head;
+            while(current.next != null) {
+                current = current.next;
+            }
+            current.next = node;
+        }
+        this.count++;
+    }
+
+    removeAt(index) {
+        if(index >= 0 && index < this.count
+
+) {
+            let current = this.head;
+            if(index === 0) {
+                this.head = current.next;
+            } else {
+                const previous = this.getElementAt(index - 1);
+                current = previous.next;
+                previous.next = current.next;
+            }
+            this.count--;
+            return current.element;
+        }
+
+        return undefined;
+    }
+
+    getElementAt(index) {
+        if(index >= 0 && index <= this.count) {
+            let node = this.head;
+            for(let i = 0; i < index && node != null; i++) {
+                node = node.next;
+            }
+            return node;
+        }
+
+        return undefined;
+    }
+
+    insert(element, index) {
+        if(index >= 0 && index <= this.count) {
+            const node = new Node(element);
+
+            if(index === 0) {
+                const current = this.head;
+                node.next = current;
+                this.head = node;
+            } else {
+                const previous = this.getElementAt(index - 1);
+                const current = previous.next;
+                node.next = current;
+                previous.next = node;
+            }
+
+            this.count++
+            return true;
+        }
+
+        return false;
+    }
+
+    indexOf(element) {
+        let current = this.head;
+
+        for(let i = 0; i < this.count && current != null; i++) {
+            if(this.#equalsFn(element, current.element)) {
+                return i;
+            }
+            current = current.next;
+        }
+
+        return -1;
+    }
+
+    remove(element) {
+        const index = this.indexOf(element);
+        return this.removeAt(index);
+    }
+
+    size() {
+        return this.count;
+    }
+
+    isEmpty() {
+        return this.size() === 0;
+    }
+
+    clear() {
+        this.count = 0;
+        this.head = null;
+    }
+
+    getHead() {
+        return this.head;
+    }
+
+    toString() {
+        if(this.head == null) {
+            return "";
+        }
+
+        let objString = `${this.head.element}`
+        let current = this.head.next;
+        for (let i = 0; i < this.size() && current != null; i++) {
+            objString = `${objString},${current.element}`;
+            current = current.next;
+        }
+
+        return objString;
+    }
+}
+
+```
+
+## Conclusión
+
+### Arrays
+
+Los arrays o listas son colecciones de elementos almacenados contiguamente en la memoria, lo que facilita el acceso rápido a los elementos a través de índices. Esta característica hace que los arrays sean particularmente eficientes para operaciones de lectura y acceso directo a elementos. Los arrays estáticos, con tamaño fijo, se asignan en la pila, proporcionando un rendimiento de alta velocidad. Los arrays dinámicos, por otro lado, ofrecen mayor flexibilidad al permitir cambios en el tamaño de la colección, pero pueden sufrir realocaciones de memoria y copias de elementos, que pueden afectar el rendimiento.
+
+### Listas Enlazadas
+
+Las listas enlazadas consisten en nodos que almacenan elementos y referencias (o punteros). Sin embargo, el acceso a los elementos en una lista enlazada es secuencial, comenzando por la cabeza de la lista, lo que puede resultar en tiempos de acceso más lentos en comparación con los arrays.
+
+### ¿Cuál es mejor usar?
+
+La elección entre usar un array o una lista enlazada depende de las operaciones que espera realizar con más frecuencia:
+
+- **Arrays** son más adecuados para situaciones en las que el acceso rápido a elementos arbitrarios es una prioridad, y el tamaño de la colección es conocido de antemano o cambia infrecuentemente.
+- **Listas Enlazadas** son ideales para aplicaciones que requieren inserciones y eliminaciones frecuentes de elementos, especialmente cuando el rendimiento de estas operaciones supera la necesidad de acceso directo a elementos.
+
+Entender las características y limitaciones de cada una de estas estructuras de datos es crucial para elegir la más adecuada para sus necesidades, optimizando así el rendimiento y la eficiencia de su aplicación. En última instancia, la decisión entre arrays y listas enlazadas debe basarse en las demandas de su proyecto y en los patrones de acceso y modificación de datos que planee, la cantidad de datos a manipular es una consideración importante tanto en la elección de una estructura de datos como en la elección de un algoritmo.
