@@ -1,0 +1,517 @@
+---
+title: "Explorando las novedades de React 19"
+lang: "es"
+description: "¡Descubre todo sobre las grandes novedades que trae React 19 para hacer tu desarrollo front-end aún más eficiente! En este artículo detallado, conocerás nuevas características como Acciones y Ganchos 'Optimistas', Componentes de Servidor, mejoras en la gestión de formularios, uso de scripts asíncronos y mucho más. No pierdas la oportunidad de anticiparte y mantenerte al tanto de los cambios que vienen con React 19. ¡Lee ahora!"
+image: "../../../public/blogs/react-19-article-image.webp"
+publishedAt: "2024-05-09"
+updatedAt: "2024-05-09"
+author: "Bruno Souza"
+isPublished: true
+tags: 
+- frontend
+---
+
+El React 19 está llegando con varias actualizaciones significativas que buscan mejorar mucho la DX (Developer Experience) y el soporte oficial para componentes de servidor, algo que ya se ha visto en algunos frameworks, además de la promesa de retirar algunos hooks como `useMemo`.
+
+Si no entendiste nada de lo que dije anteriormente, no te preocupes, porque vamos a ver cada una de las novedades en detalle.
+
+## Acciones y Hooks "Optimistas"
+
+La introducción de "Acciones" es uno de los cambios más esperados, simplificando la gestión de estados pendientes y el manejo de errores en escenarios asíncronos. Los desarrolladores ahora pueden utilizar el nuevo hook `useOptimistic` para realizar actualizaciones "optimistas", haciendo que las interacciones del usuario sean más fluidas.
+
+Las "Acciones" en React 19 ofrecen una forma robusta y escalable de manejar estados asíncronos, especialmente útiles en aplicaciones complejas donde la gestión del estado puede volverse bastante desafiante. Con esta característica, los desarrolladores pueden encapsular la lógica de estado y los efectos secundarios en una abstracción más simple y cohesiva, facilitando el manejo de operaciones asíncronas como obtener datos, actualizaciones de estado pendientes y manejo de errores.
+
+Además, las actualizaciones optimistas con el hook `useOptimistic` permiten a los desarrolladores aplicar cambios en el estado de la interfaz de usuario incluso antes de la confirmación del servidor. Esto proporciona una experiencia de usuario más rápida y receptiva, ya que los cambios parecen instantáneos. Este recurso es especialmente valioso en situaciones donde el tiempo de respuesta del servidor puede afectar negativamente la percepción de la aplicación por parte del usuario.
+
+Estas mejoras en React 19 parecen prometedoras con el objetivo de optimizar la experiencia de desarrollo y el rendimiento de la aplicación. Ya era hora de que React se alineara más con las necesidades modernas de desarrollo web rápido y eficiente, como ya lo están haciendo algunos frameworks.
+
+### Nuevo hook `useTransition`
+
+Antes de `useTransition`, si querías proporcionar retroalimentación al usuario mientras ocurría una acción asíncrona, tenías que crear un estado para manejar los errores, los datos pendientes, además de tener que realizar actualizaciones "optimistas" (que no es más que mostrar visualmente al usuario que la solicitud que realizó se está procesando en segundo plano) y realizar las solicitudes.
+
+Antes de las acciones:
+
+```jsx
+function LoginForm() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [isPending, setIsPending] = useState(false);
+
+  const handleLogin = async () => {
+    setIsPending(true);
+    const error = await login(username, password);
+    setIsPending(false);
+
+    if (error) {
+      setError(error);
+      return;
+    }
+
+    redirect("/home");
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={username}
+        onChange={(event) => setUsername(event.target.value)}
+        placeholder="Usuario"
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+        placeholder="Contraseña"
+      />
+      <button onClick={handleLogin} disabled={isPending}>
+        Entrar
+      </button>
+      {error && <p>{error}</p>}
+    </div>
+  );
+}
+
+```
+
+Después de las acciones:
+
+```jsx
+function LoginForm() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [isPending, startTransition] = useTransition();
+
+  const handleLogin = () => {
+    startTransition(async () => {
+      const error = await login(username, password);
+      if (error) {
+        setError(error);
+        return;
+      }
+
+      redirect("/home");
+    });
+  };
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={username}
+        onChange={(event) => setUsername(event.target.value)}
+        placeholder="Usuario"
+      />
+      <input
+        type="password"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+        placeholder="Contraseña"
+      />
+      <button onClick={handleLogin} disabled={isPending}>
+        Entrar
+      </button>
+      {error && <p>{error}</p>}
+    </div>
+  );
+}
+
+```
+
+### ¿Qué cambió?
+
+El cambio principal es que antes de React 19, los desarrolladores tenían que manejar manualmente el estado de carga (como en el segundo ejemplo) usando un estado `isPending` y definiéndolo como `true` antes de una operación asíncrona y `false` después.
+
+Con `useTransition`, React introdujo una forma más fácil de manejar las actualizaciones de estado que pueden causar jank (caídas de rendimiento). Veamos las principales diferencias:
+
+1. **Estado pendiente**:
+    - Antes: Usábamos un estado `isPending` para controlar manualmente el estado de carga.
+    - Con `useTransition`: El hook devuelve un par `[isPending, startTransition]`. `isPending` es `true` cuando hay una transición de estado pendiente, y `false` en caso contrario.
+2. **Iniciar transiciones**:
+    - Antes: Actualizábamos el estado directamente antes y después de una operación asíncrona.
+    - Con `useTransition`: Llamamos a `startTransition` con una función que contiene la lógica asíncrona y las actualizaciones de estado. React gestiona el estado pendiente por debajo.
+3. **Prioridad de actualización**:
+    - Antes: Todas las actualizaciones de estado tenían la misma prioridad.
+    - Con `useTransition`: Las actualizaciones de estado dentro de `startTransition` tienen prioridad baja, permitiendo que React actualice el estado inmediatamente para mantener la interfaz receptiva.
+
+El objetivo de este cambio es mejorar la percepción de rendimiento de la interfaz de usuario. Al usar `useTransition`, las actualizaciones de estado causadas por operaciones asíncronas de alta prioridad (como buscar datos) se retrasan y se renderizan con una prioridad más baja. Esto permite que React mantenga la interfaz receptiva durante estas operaciones, evitando jank y proporcionando una experiencia de usuario más suave.
+
+**Una nota dejada por el equipo de React enfatiza que toda transición asíncrona se llama por convención de Acción.**
+
+### Acciones en formularios
+
+Con React 19, se han introducido nuevos recursos para simplificar aún más la gestión de formularios y las actualizaciones "optimistas". Veamos las novedades:
+
+1. **useOptimistic**: Este nuevo hook permite gestionar
+
+fácilmente las actualizaciones optimistas. Las actualizaciones optimistas son actualizaciones temporales que ocurren inmediatamente en la interfaz de usuario, antes de que se complete una operación asíncrona. El objetivo es mejorar la percepción de rendimiento, ya que el usuario ve una respuesta inmediata, mientras que la operación real se procesa en segundo plano.
+2. **useActionState**: Este hook se utiliza para gestionar el estado de acciones asíncronas, como el envío de formularios o llamadas de API. Devuelve un array con tres valores: `[error, submitAction, isPending]`.
+3. **Acciones de `<form>`**: React 19 introduce la capacidad de gestionar formularios automáticamente usando la etiqueta `<form>` y el atributo `action`. Cuando se envía un formulario, React llamará automáticamente a la función definida en `action` con los datos del formulario.
+4. **useFormStatus**: Este hook está diseñado para trabajar junto con `<form>` Actions. Proporciona información sobre el estado del formulario, como si se está enviando, o si hubo errores, etc.
+
+Veamos cómo quedaría un ejemplo de formulario de inicio de sesión usando estas novedades:
+
+```jsx
+function LoginForm() {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [error, submitAction, isPending] = useActionState(
+    async (previousState, formData) => {
+      const username = formData.get("username");
+      const password = formData.get("password");
+      const error = await login(username, password);
+
+      if (error) {
+        return error;
+      }
+
+      redirect("/home");
+      return null;
+    },
+    null
+  );
+
+  return (
+    <form action={submitAction}>
+      <input
+        type="text"
+        name="username"
+        value={username}
+        onChange={(event) => setUsername(event.target.value)}
+        placeholder="Usuario"
+      />
+      <input
+        type="password"
+        name="password"
+        value={password}
+        onChange={(event) => setPassword(event.target.value)}
+        placeholder="Contraseña"
+      />
+      <button type="submit" disabled={isPending}>
+        Entrar
+      </button>
+      {error && <p>{error}</p>}
+    </form>
+  );
+}
+
+```
+
+### Simplificación de la Gestión de Estado de Formularios
+
+En este ejemplo, usamos `useActionState` para definir la función que se llamará cuando se envíe el formulario. Dentro de esta función, recuperamos los valores de `username` y `password` del objeto `formData`, que contiene los datos del formulario.
+
+Luego, llamamos a la función `login` con estos valores y manejamos el error, si lo hay. Si la autenticación es exitosa, redirigimos al usuario a la página de inicio.
+
+En el retorno del componente, renderizamos un formulario con los campos de entrada y un botón de envío. El atributo `action` en el elemento `<form>` se establece con el valor de `submitAction` devuelto por `useActionState`.
+
+Cuando el usuario envía el formulario, React llamará automáticamente la función definida en `submitAction` con los datos del formulario. El estado `isPending` se utiliza para deshabilitar el botón de envío mientras la operación asíncrona está en curso, y `error` se muestra si hay algún error durante el proceso de inicio de sesión.
+
+Con estas nuevas adiciones, la gestión de formularios y actualizaciones se vuelve más simple y centralizada, reduciendo la necesidad de gestionar manualmente el estado en diferentes partes del código.
+
+> El hook useActionState recibe una función como argumento, a la que llamaremos "Acción". Esta Acción generalmente es una función asíncrona que realiza alguna operación, como una llamada de API o el envío de un formulario. useActionState luego devuelve un array con tres elementos: la propia Acción encapsulada, un valor data y un valor pending.
+> 
+
+> La Acción encapsulada es una versión envuelta de la Acción original proporcionada. Cuando se llama a esta Acción encapsulada, useActionState ejecuta la Acción original internamente y gestiona su estado.
+> 
+
+### Acciones de `<form>`
+
+Las Acciones también se han integrado con las nuevas características de `<form>` de React 19 para `react-dom`. Se ha añadido soporte para pasar funciones como las propiedades `action` y `formAction` de los elementos `<form>`, `<input>` y `<button>` para enviar formularios automáticamente con Acciones:
+
+```jsx
+<form action={funcionAccion}>
+
+```
+
+Cuando una Acción de `<form>` tiene éxito, React restablecerá automáticamente el formulario a componentes no controlados. Si necesitas restablecer manualmente el `<form>`, puedes llamar a la nueva API `requestFormReset` de React DOM.
+
+Este nuevo enfoque te permite definir una función (la Acción) que se ejecutará cuando se envíe el formulario. Esta función generalmente realizará alguna operación asíncrona, como enviar datos a un servidor o realizar validaciones.
+
+Al establecer la propiedad `action` de un elemento `<form>` con una función Acción, React automatizará el envío del formulario usando esa Acción cuando el usuario haga clic en el botón de envío.
+
+Esto simplifica la gestión de formularios, ya que ya no es necesario adjuntar manualmente un controlador de eventos `onSubmit` al formulario y manejar el envío manualmente.
+
+### React DOM: Nuevo hook: `useFormStatus`
+
+Es común escribir componentes que necesitan acceder a información sobre el `<form>` en el que están, sin necesidad de pasar propiedades (prop drilling) al componente. Esto se puede hacer a través de Context, pero para hacer este caso común más fácil de manejar, se ha añadido un nuevo hook `useFormStatus`:
+
+```jsx
+import {useFormStatus} from "react-dom";
+
+function Boton() {
+	const {pending} = useFormStatus();
+	return <button type="submit" disabled={pending} />
+}
+
+```
+
+El hook `useFormStatus` lee el estado del `<form>` padre como si el formulario fuera un proveedor de Context.
+
+Este hook permite que los componentes de diseño, como los botones, obtengan información sobre el estado del formulario en el que están, como si se está enviando (pendiente) o no. Esto es útil para crear componentes reutilizables que pueden adaptarse al estado del formulario sin necesidad de recibir esa información a través de propiedades (props).
+
+En el ejemplo anterior, el componente `Boton` usa `useFormStatus` para obtener el valor `pending`, que indica si el formulario se está enviando o no. Luego, utiliza este valor para deshabilitar o habilitar el botón de envío del formulario.
+
+Estas nuevas funcionalidades
+
+simplifican la gestión de formularios en React, permitiendo que los desarrolladores se centren en la lógica del formulario, en lugar de ocuparse de detalles de bajo nivel del manejo de estado y eventos.
+
+### Nuevo hook `useOptimistic`
+
+Con React 19, se ha introducido un nuevo hook llamado `useOptimistic` para facilitar la implementación de un patrón común de interfaz de usuario: mostrar un estado final de forma optimista mientras una solicitud asíncrona está en curso.
+
+Este patrón es útil cuando estás realizando una mutación de datos, como actualizar un nombre de usuario o enviar un formulario. En lugar de esperar a que se complete la solicitud asíncrona para actualizar la interfaz de usuario, puedes mostrar el nuevo estado de inmediato, dando una sensación de respuesta más rápida al usuario.
+
+```jsx
+import { useOptimistic } from 'react';
+
+function BotonMeGusta({ likeInicial, enCambiarMeGusta }) {
+  const [likeOptimista, setLikeOptimista] = useOptimistic(likeInicial);
+
+  const manejarMeGusta = async () => {
+    setLikeOptimista(likeOptimista + 1);
+
+    try {
+      const contadorMeGustaActualizado = await actualizarContadorMeGusta();
+      enCambiarMeGusta(contadorMeGustaActualizado);
+    } catch (error) {
+      console.error('Error al dar me gusta:', error);
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={manejarMeGusta}>Me Gusta</button>
+      <span>Me Gustas: {likeOptimista}</span>
+    </div>
+  );
+}
+
+```
+
+El hook `useOptimistic` permite hacer esto de manera sencilla. Así es como funciona:
+
+1. Llamas a `useOptimistic` pasando el valor inicial (en el ejemplo, `likeInicial`).
+2. El hook devuelve dos valores: el valor optimista (`likeOptimista`) y una función para actualizar ese valor (`setLikeOptimista`).
+3. Cuando deseas realizar una actualización asíncrona, como dar me gusta a un ítem, llamas a `setLikeOptimista` con el nuevo valor deseado.
+4. La interfaz de usuario se actualizará inmediatamente con el valor optimista.
+5. Luego, inicias la operación asíncrona (en el ejemplo, `actualizarContadorMeGusta`).
+6. Cuando se completa la operación asíncrona con éxito, actualizas el valor real (en el ejemplo, `enCambiarMeGusta(contadorMeGustaActualizado)`).
+7. Si hay un error, React revertirá automáticamente el valor optimista al valor inicial (`likeInicial`).
+
+Este proceso permite que el usuario vea una respuesta inmediata en la interfaz, incluso si la operación asíncrona tarda un poco en completarse. Si la operación tiene éxito, el valor optimista se convierte en el valor real. Si hay un error, se restaura el valor original `likeInicial`, asegurando que el estado sea consistente.
+
+En el ejemplo del componente `BotonMeGusta`, cuando el usuario hace clic en el botón "Me Gusta", el valor `likeOptimista` se incrementa inmediatamente. El usuario ve esta actualización optimista mientras la solicitud `actualizarContadorMeGusta` está en curso. Cuando se completa la solicitud, se actualiza el valor real a través de `enCambiarMeGusta`. Si hay un error, se restaura el valor original `likeInicial`.
+
+El hook `useOptimistic` facilita la implementación de este patrón de interfaz de usuario, ya que maneja automáticamente la reversión del estado optimista en caso de error y garantiza la consistencia de los datos, sin requerir que gestiones manualmente el estado en diferentes partes del código.
+
+## Nueva API `use`
+
+Con React 19, se ha introducido una nueva API llamada `use` para leer recursos (como promesas o contexto) durante la renderización. Este enfoque permite cargar datos de forma asíncrona y suspender la renderización del componente hasta que estos datos estén disponibles.
+
+Aquí tienes un ejemplo de cómo podrías usar `use` para cargar datos de un usuario desde una API:
+
+```jsx
+import { use } from 'react';
+
+function fetchUserData(userId) {
+  return fetch(`https://api.example.com/users/${userId}`)
+    .then(response => response.json());
+}
+
+function UserProfile({ userId }) {
+  // `use` suspenderá la renderización hasta que los datos del usuario se carguen
+  const userData = use(fetchUserData(userId));
+
+  return (
+    <div>
+      <h1>{userData.name}</h1>
+      <p>Email: {userData.email}</p>
+      <p>Biografía: {userData.bio}</p>
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <UserProfile userId={123} />
+    </Suspense>
+  );
+}
+
+```
+
+En este ejemplo, tenemos un componente `UserProfile` que muestra información de un usuario. Dentro de este componente, llamamos a la función `fetchUserData` pasando el `userId` y luego usamos `use` para leer los datos devueltos por esta función.
+
+`use` suspenderá la renderización del componente `UserProfile` hasta que la promesa devuelta por `fetchUserData` se resuelva, es decir, hasta que los datos del usuario estén cargados. Durante este tiempo, React mostrará el componente `fallback` definido dentro de `Suspense`.
+
+Una vez que los datos del usuario estén disponibles, el componente `UserProfile` se renderizará con la información del usuario.
+
+Este enfoque te permite cargar datos de forma asíncrona y suspender la renderización del componente hasta que estos datos estén listos, evitando la necesidad de manejar manualmente los estados de carga o el manejo de errores en cada componente que necesita acceder a estos datos.
+
+`use` se puede usar para leer no solo promesas, sino también contexto y otros recursos. Proporciona una forma declarativa de gestionar la carga de datos en tus componentes React.
+
+Es importante tener en cuenta que `use` solo se puede llamar dentro de la función de renderización, al igual que los hooks regulares. Sin embargo, a diferencia de los hooks, `use` se puede llamar condicionalmente, lo que lo hace más flexible en algunos casos.
+
+El equipo de React planea agregar más características y mejoras relacionadas con `use` en el futuro, lo que facilitará aún más la gestión de recursos y datos asíncronos en tus aplicaciones.
+
+## React en el lado del servidor
+
+### Componentes del Servidor
+
+Los "Server Components" llegan para permitir que los componentes se rendericen de manera más eficiente en el servidor. Esto no solo reduce la carga transmitida al cliente, sino que también mejora los tiempos de carga y el rendimiento general de la aplicación.
+
+Son una nueva opción que permite renderizar componentes anticipadamente, antes del empaquetado (bundling), en un entorno separado de tu aplicación cliente o servidor de renderizado en el lado del servidor (SSR). Este entorno separado es el "servidor" en los React Server Components.
+
+Los Server Components se pueden ejecutar una vez, durante el proceso de construcción en tu servidor de integración continua (CI), o se pueden ejecutar para cada solicitud utilizando un servidor web.
+
+La idea principal detrás de los Server Components es separar la lógica de tu aplicación React en dos partes: la parte que puede renderizarse en el servidor (Server Components) y la parte que necesita renderizarse en el cliente (Client Components).
+
+Al adoptar este enfoque, puedes aprovechar los beneficios de la renderización en el lado del servidor, como un mejor rendimiento inicial, mejor SEO y una mejor experiencia de carga para los usuarios. Al mismo tiempo, mantienes la interactividad y la capacidad de respuesta de una aplicación React renderizada en el lado del cliente.
+
+React 19 incluye todos los recursos de React Server Components incluidos en el canal Canary. Esto significa que las bibliotecas que envían Server Components ahora pueden tener a React 19 como una dependencia y proporcionar una exportación `react-server` para su uso en estructuras que admiten la Arquitectura React Full-stack.
+
+Es importante tener en cuenta que, aunque los React Server Components en React 19 son estables y no se romperán entre versiones principales, las APIs subyacentes utilizadas para implementar un empaquetador (bundler) o estructura de React Server Components no siguen el semver y pueden romperse entre versiones menores en React 19.x.
+
+Para admitir los React Server Components como un empaquetador o estructura, el equipo de React recomienda fijar una versión específica de React o usar la versión Canary. Continuarán trabajando con empaquetadores y estructuras para estabilizar las APIs utilizadas para implementar los React Server Components en el futuro.
+
+Los React Server Components ofrecerán una nueva forma nativa de estructurar y renderizar aplicaciones React, separando la lógica del servidor y del cliente. Esto puede traer beneficios significativos en términos de rendimiento, SEO y experiencia del usuario, al mismo tiempo que mantiene la interactividad y la capacidad de respuesta de las aplicaciones React renderizadas en el lado del cliente.
+
+### Acciones del Servidor
+
+Las Server Actions permiten que los Client Components (componentes renderizados en el cliente) llamen a funciones asíncronas ejecutadas en el servidor.
+
+Cuando se define una Server Action con la directiva `"use server"`, tu estructura (framework) creará automáticamente una referencia a la función del servidor y pasará esa referencia al Client Component. Cuando esta función se llama en el cliente, React enviará una
+
+solicitud al servidor para ejecutar la función y devolver el resultado.
+
+Esto significa que puedes escribir lógica asíncrona compleja, como obtener datos de una API o realizar cálculos intensivos, en el lado del servidor y luego llamar a estas funciones desde tus Client Components. React se encargará de enviar las solicitudes al servidor y devolver los resultados al cliente.
+
+Un punto importante a tener en cuenta es que la directiva `"use server"` no se utiliza para marcar los Server Components (componentes renderizados en el servidor). Esta es una confusión común. La directiva `"use server"` se utiliza específicamente para marcar las Server Actions.
+
+Las Server Actions pueden crearse dentro de los Server Components y pasarse como props a los Client Components, o pueden importarse y usarse directamente en los Client Components.
+
+Este recurso de Server Actions aporta varios beneficios:
+
+1. **Separación de preocupaciones**: Puedes separar la lógica compleja y asíncrona de tu código del lado del cliente, manteniendo los Client Components livianos y enfocados en la renderización de la interfaz de usuario.
+2. **Rendimiento**: Las operaciones asíncronas e intensivas se ejecutan en el servidor, reduciendo la carga en el lado del cliente y mejorando el rendimiento de la aplicación.
+3. **Seguridad**: Las operaciones sensibles o que requieren acceso a recursos protegidos pueden ejecutarse de forma segura en el lado del servidor, sin exponer información confidencial en el cliente.
+4. **Escalabilidad**: Como las operaciones complejas se ejecutan en el servidor, tu aplicación puede manejar más solicitudes simultáneas en el lado del cliente sin sobrecargar los recursos del cliente.
+
+Las Server Actions son una poderosa adición a React 19, que te permite aprovechar los beneficios de la renderización en el lado del servidor y del cliente, combinando lo mejor de ambos mundos en una sola aplicación.
+
+## Mejoras generales en React 19
+
+### SSR y Metadatos
+
+La integración con la renderización en el lado del servidor (SSR) se ha mejorado, permitiendo una renderización anticipada más efectiva y un manejo más inteligente de scripts asíncronos. React 19 también introduce soporte nativo para metadatos de documentos y estilos en componentes, lo que facilitará la manipulación de información de la página y la estilización sin sacrificar el rendimiento.
+
+### **Metadatos de Documentos:**
+
+En React 19, se ha añadido soporte nativo para renderizar etiquetas de metadatos de documentos, como `<title>`, `<link>` y `<meta>`, dentro de los componentes React. Anteriormente, estas etiquetas necesitaban ser insertadas manualmente usando efectos (effects) o bibliotecas externas, lo que era una tarea complicada, especialmente para la renderización en el lado del servidor.
+
+Ahora, puedes incluir estas etiquetas directamente en los componentes React, y React se encargará de extraerlas y ubicarlas correctamente en la sección `<head>` del documento HTML. Esto garantiza que los metadatos funcionen correctamente en aplicaciones renderizadas solo en el cliente, con renderización en el lado del servidor (SSR) o con Server Components.
+
+### Hojas de Estilo:
+
+Otro desafío abordado en React 19 es el manejo de hojas de estilo. Las reglas de precedencia de estilos dificultan la colocación correcta de las hojas de estilo en el DOM, lo que llevaba a los desarrolladores a cargarlas lejos de los componentes que las utilizan o a usar bibliotecas de estilo para encapsular esta complejidad.
+
+Con React 19, puedes informar la precedencia de tus hojas de estilo, y React gestionará el orden de inserción de estas hojas en el DOM, asegurando que se carguen antes de renderizar el contenido que depende de ellas. Puedes hacer esto tanto para hojas de estilo externas (`<link rel="stylesheet">`) como para estilos en línea (`<style>`).
+
+Durante la renderización en el lado del servidor (SSR), React incluirá las hojas de estilo en la sección `<head>`, asegurando que el navegador no renderice el contenido hasta que se carguen los estilos. En el lado del cliente, React esperará el cargado de las nuevas hojas de estilo antes de confirmar la renderización.
+
+Beneficios:
+
+1. Facilidad de uso: Puedes colocar los metadatos y hojas de estilo cerca de los componentes que los necesitan, mejorando el razonamiento local y asegurando que solo se carguen los recursos necesarios.
+2. Consistencia: React garantiza que los metadatos y hojas de estilo se rendericen correctamente, independientemente de si son aplicaciones renderizadas solo en el cliente, con SSR o usando Server Components.
+3. Rendimiento: React optimiza la carga de hojas de estilo, evitando duplicados y garantizando que el contenido se renderice solo después de la carga de los estilos necesarios.
+4. Integración: Las bibliotecas de estilo y las integraciones de estilo con empaquetadores (bundlers) pueden adoptar estos nuevos recursos, permitiéndote beneficiarte de ellos, incluso si no renderizas directamente tus propias hojas de estilo.
+
+Estas mejoras hacen que la gestión de metadatos de documentos y hojas de estilo sea más simple e integrada en React, permitiéndote concentrarte en la lógica de la aplicación en lugar de ocuparte de detalles complejos de renderización y posicionamiento de estos recursos.
+
+### Soporte para scripts asíncronos
+
+En React 19, se ha añadido un mejor soporte para scripts asíncronos (`<script async>`). Ahora, puedes renderizarlos en cualquier lugar en el árbol de componentes, dentro de los componentes que realmente dependen de ese script, sin necesidad de manejar la reubicación y la deduplicación de instancias de scripts.
+
+```jsx
+function MiComponente() {
+  return (
+    <div>
+      <script async src="<https://example.com/mi-script.js>" />
+      ¡Hola, Mundo!
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <html>
+      <body>
+        <MiComponente />
+        {/* No habrá duplicación del script en el DOM */}
+        <MiComponente />
+      </body>
+    </html>
+  );
+}
+
+```
+
+En todos los entornos de renderización, los scripts asíncronos se deduplicarán, asegurando que React cargue y ejecute el script solo una vez, incluso si es renderizado por varios componentes diferentes.
+
+Durante la renderización en el lado del servidor (SSR), los scripts asíncronos se incluirán en la sección `<head>` y tendrán prioridad después de los recursos críticos que bloquean la renderización
+
+, como hojas de estilo, fuentes y precarga de imágenes.
+
+### Precarga de Recursos:
+
+Durante la carga inicial del documento y en las actualizaciones en el lado del cliente, informar al navegador sobre los recursos que probablemente se necesitarán lo antes posible puede tener un efecto dramático en el rendimiento de la página.
+
+React 19 incluye varias nuevas APIs para cargar y precargar recursos del navegador, facilitando la construcción de experiencias excelentes que no se vean afectadas por la carga ineficiente de recursos.
+
+```jsx
+import { prefetchDNS, preconnect, preload, preinit } from 'react-dom';
+
+function MiComponente() {
+  preinit('<https://example.com/mi-script.js>', { as: 'script' }); // carga y ejecuta este script de inmediato
+  preload('<https://example.com/mi-fuente.woff>', { as: 'font' }); // precarga esta fuente
+  preload('<https://example.com/mi-estilo.css>', { as: 'style' }); // precarga esta hoja de estilo
+  prefetchDNS('<https://example.com>'); // cuando quizás no solicites nada de este host
+  preconnect('<https://example.com>'); // cuando solicitarás algo, pero no estás seguro de qué es
+}
+
+```
+
+Estas APIs pueden utilizarse para optimizar las cargas iniciales de páginas, moviendo el descubrimiento de recursos adicionales, como fuentes, fuera de la carga de hojas de estilo. También pueden hacer que las actualizaciones en el lado del cliente sean más rápidas, precargando una lista de recursos utilizados por una navegación anticipada y luego preiniciando estos recursos activamente en el clic o incluso al pasar el mouse sobre un elemento.
+
+### Compatibilidad con Scripts de Terceros y Extensiones:
+
+React 19 mejoró la hidratación para tener en cuenta los scripts de terceros y las extensiones del navegador.
+
+Durante la hidratación, si un elemento que se renderiza en el cliente no coincide con el elemento encontrado en el HTML del servidor, React forzará una nueva renderización en el cliente para corregir el contenido. Anteriormente, si un elemento era insertado por scripts de terceros o extensiones del navegador, esto provocaría un error de incompatibilidad y la renderización en el cliente (¡Gracias a Dios esto ya no sucederá más!).
+
+En React 19, las etiquetas inesperadas en las secciones `<head>` y `<body>` serán ignoradas, evitando errores de incompatibilidad. Si React necesita volver a renderizar todo el documento debido a una incompatibilidad de hidratación no relacionada, mantendrá las hojas de estilo insertadas por scripts de terceros y extensiones del navegador.
+
+Estas mejoras permiten un mejor control sobre la carga de recursos y scripts asíncronos, facilitando la optimización del rendimiento de tu aplicación React. Además, la mejora en la compatibilidad con scripts de terceros y extensiones del navegador evita errores y preserva el contenido insertado por estos recursos externos, mejorando la estabilidad y robustez de tu aplicación.
+
+### Mejor manejo de errores
+
+En React 19, se ha mejorado el manejo de errores para reducir duplicaciones y ofrecer mejores opciones para manejar errores capturados y no capturados. Anteriormente, cuando ocurría un error durante la renderización que era capturado por un Error Boundary, React lanzaba el mismo error dos veces y aún registraba un `console.error` con información sobre dónde ocurrió el error, lo que resultaba en tres registros por cada error. Ahora, React 19 registra un único error, consolidando toda la información relevante en un único mensaje.
+
+Además, se han añadido nuevas opciones de configuración en la raíz de la aplicación para manejar diferentes tipos de errores, mejorando la flexibilidad y el control sobre el manejo de errores.
+
+Soporte para elementos personalizados (Web components)
+
+Para el soporte de elementos personalizados, React 19 ahora maneja adecuadamente las propiedades y atributos de los elementos, tanto en el renderizador del lado del servidor como en el cliente, facilitando la integración con Web Components y solucionando problemas anteriores relacionados con el mapeo incorrecto de props a atributos.
+
+### Conclusión
+
+React 19 es un paso importante en el desarrollo de la biblioteca, trayendo nuevas herramientas y mejoras que facilitan el trabajo de los desarrolladores y, por lo tanto, mejoran la experiencia del usuario final.
+
+Con estas actualizaciones, React se fortalece como una de las principales herramientas de desarrollo front-end en el mercado.
+
+> Pronto publicaré una guía completa de todo lo que necesitas saber para dominar React, quédate atento.
